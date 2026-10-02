@@ -1,26 +1,312 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+  Tema MultiCap
+  - Página clara por padrão (tokens em :root)
+  - Seções escuras de contraste: envolva o bloco com a classe `.section-dark`
+    (troca os tokens e ativa a variante `dark:` do Tailwind dentro dela)
+*/
+@custom-variant dark (&:is(.dark *, .section-dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-script: var(--font-caveat), "Comic Sans MS", cursive;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Marca */
+  --color-surface: var(--surface);
+  --color-gold: var(--gold);
+  --color-brand-red: var(--brand-red);
+  --color-brand-blue: var(--brand-blue);
+  --color-gradient-from: var(--gradient-from);
+  --color-gradient-to: var(--gradient-to);
+  --color-magenta: var(--magenta);
+  /* "Regra do ponto": verde no claro, magenta no escuro */
+  --color-dot: var(--dot);
+
+  /* Radius: --radius = 16px (cards). Botões e pills usam --radius-pill. */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.25);
+  --radius-2xl: calc(var(--radius) * 1.5);
+  --radius-3xl: calc(var(--radius) * 2);
+  --radius-4xl: calc(var(--radius) * 2.5);
+  --radius-card: var(--radius);
+  --radius-pill: 999px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Tokens comuns (não mudam entre claro/escuro) ---------- */
+:root {
+  --radius: 1rem; /* 16px */
+
+  --primary: #1ea076;
+  --primary-hover: #23b585;
+  --primary-foreground: #ffffff;
+
+  --gradient-from: #5bae89;
+  --gradient-to: #2e5e48;
+
+  --gold: #d4a537;
+  --magenta: #e6338a;
+  --brand-red: #e5484d;
+  --brand-blue: #4c7dff;
+  --dot: var(--primary);
+  --destructive: var(--brand-red);
+
+  --chart-1: var(--primary);
+  --chart-2: var(--gradient-from);
+  --chart-3: var(--gold);
+  --chart-4: var(--brand-blue);
+  --chart-5: var(--gradient-to);
+}
+
+/* ---------- Claro (base) ---------- */
+:root {
+  --background: #f4f6f5;
+  --foreground: #0e1a15;
+  --surface: #ffffff;
+  --border: #e3e9e6;
+  --muted-foreground: #5b6b64;
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --secondary: #e8eeeb;
+  --secondary-foreground: var(--foreground);
+  --muted: #e8eeeb;
+  --accent: #e4f3ec;
+  --accent-foreground: var(--foreground);
+  --input: var(--border);
+  --ring: var(--primary);
+
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+}
+
+/* ---------- Escuro (.section-dark) ---------- */
+.section-dark,
+.dark {
+  --background: #0b1210;
+  --foreground: #f2f5f3;
+  --surface: #121a17;
+  --border: #1f2a26;
+  --muted-foreground: #8a9a93;
+
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --secondary: #182220;
+  --secondary-foreground: var(--foreground);
+  --muted: #182220;
+  --accent: #15291f;
+  --accent-foreground: var(--foreground);
+  --input: var(--border);
+  --ring: var(--primary);
+
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--foreground);
+  --sidebar-primary: var(--primary);
+  --sidebar-primary-foreground: var(--primary-foreground);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--foreground);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+
+  /* Regra de contraste: em fundo escuro o destaque é a primária clara */
+  --primary: #23b585;
+  --primary-hover: #2cc994;
+  /* Regra do ponto: magenta no escuro */
+  --dot: var(--magenta);
+
+  background-color: var(--background);
+  color: var(--foreground);
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@utility bg-brand-gradient {
+  background-image: linear-gradient(135deg, var(--gradient-from), var(--gradient-to));
+}
+
+@utility text-brand-gradient {
+  background-image: linear-gradient(135deg, var(--gradient-from), var(--gradient-to));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+/* ---------- Animações (CSS puro, desligadas pelo bloco de reduced-motion abaixo) ---------- */
+@theme {
+  --animate-shine: shine 3.4s ease-in-out infinite;
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-pulse-ring: pulse-ring 2.2s ease-out infinite;
+  --animate-glow-drift: glow-drift 14s ease-in-out infinite alternate;
+  --animate-sync-dot: sync-dot 2.2s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 22s linear infinite;
+  --animate-border-spin: border-spin 8s linear infinite;
+  --animate-glow-pulse: glow-pulse 5s ease-in-out infinite;
+  --animate-marquee-fast: marquee 18s linear infinite;
+
+  @keyframes shine {
+    0% { transform: translateX(-160%) skewX(-18deg); }
+    55%, 100% { transform: translateX(260%) skewX(-18deg); }
+  }
+  @keyframes marquee {
+    to { transform: translateX(-50%); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--float-rotate, 0deg)); }
+    50% { transform: translateY(-12px) rotate(var(--float-rotate, 0deg)); }
+  }
+  @keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.55; }
+    100% { transform: scale(1.9); opacity: 0; }
+  }
+  @keyframes border-spin {
+    to { --angle: 360deg; }
+  }
+  @keyframes glow-pulse {
+    0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.12); }
+  }
+  @keyframes spin-slow {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes sync-dot {
+    0% { left: 0; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { left: calc(100% - 8px); opacity: 0; }
+  }
+  @keyframes glow-drift {
+    0% { transform: translate(-6%, -4%) scale(1); }
+    50% { transform: translate(5%, 6%) scale(1.08); }
+    100% { transform: translate(-3%, 8%) scale(0.96); }
+  }
+}
+
+/* Ângulo animável para a borda gradiente girando (card de preço) */
+@property --angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@utility bg-conic-brand {
+  background-image: conic-gradient(
+    from var(--angle),
+    var(--primary),
+    var(--gold),
+    var(--gradient-from),
+    var(--primary)
+  );
+}
+
+@utility mask-fade-all {
+  mask-image:
+    linear-gradient(to right, transparent, black 18%, black 82%, transparent),
+    linear-gradient(to bottom, transparent, black 10%, black 80%, transparent);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
+}
+
+@utility mask-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 55%, transparent 100%);
+}
+
+@utility bg-grid-lines {
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@utility mask-fade-edges-x {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+@utility mask-fade-radial {
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 30%, transparent 75%);
+}
+
+/*
+  Progressive enhancement: o <html> só recebe a classe `js` por um script inline no
+  início do <body>. Sem ela (JS desligado ou bundle que não carregou), os elementos
+  com data-reveal ignoram o estado inicial oculto da animação e aparecem normalmente.
+*/
+html:not(.js) [data-reveal] {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+/* Acessibilidade: desliga animações para quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

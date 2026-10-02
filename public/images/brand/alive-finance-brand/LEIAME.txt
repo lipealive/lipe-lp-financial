@@ -1,0 +1,22 @@
+ALIVE FINANCE by MultiCap — kit de marca v1
+
+LOGOS (texto já convertido em vetor, não precisa de fonte)
+- logo-horizontal-light.svg  → símbolo + nome + "by MultiCap", para fundo claro
+- logo-horizontal-dark.svg   → mesma, para fundo escuro
+- wordmark-light/dark.svg    → só o nome (header compacto, criativos)
+- symbol-green/white.svg     → só o símbolo
+
+ÍCONES
+- favicon.ico / favicon.svg / favicon-16/32/48.png → aba do navegador (traço mais grosso)
+- apple-touch-icon.png (180) → "Adicionar à Tela de Início" no iPhone
+- icon-192/512.png, icon-maskable-512.png → Android / manifest
+
+CORES
+- Verde       #1EA076  (escuro: #23B585)
+- Magenta     #E6338A  (só o ponto / detalhes, assinatura do Lipe)
+- Tinta       #0E1A15   Fundo claro #F4F6F5   Fundo escuro #0B1210
+- Muted       #5B6B64  (escuro: #8A9A93)
+
+TIPOGRAFIA
+- Plus Jakarta Sans 800 (nome e títulos), 500 (apoio)
+- Regra do ponto: verde em fundo claro, magenta em fundo escuro
