@@ -18,7 +18,7 @@
 4. **Nenhum texto de oferta fora de `src/config/site.ts`**: preço, preço "de", parcelas, garantia, link do checkout Kiwify, IDs do VTurb, WhatsApp de suporte. Seções importam de `@/config/site`; nunca hardcode.
 5. **Tema por tokens** em `src/app/globals.css`. Página clara por padrão; seções escuras de contraste envolvidas por `.section-dark` (troca os tokens e ativa `dark:`). Use classes semânticas (`bg-background`, `bg-card`, `text-muted-foreground`, `bg-primary`, `bg-gold`, `bg-brand-gradient`, `text-brand-gradient`); nunca hex solto em componentes.
 6. Radius: cards 16px (`rounded-lg` = `--radius`), botões/pills 999px (`rounded-full`). Os componentes shadcn já vêm ajustados.
-7. Variáveis de ambiente em `.env.example` (`NEXT_PUBLIC_META_PIXEL_ID`, `META_CAPI_TOKEN`, `META_TEST_EVENT_CODE`). Token da CAPI só em server (route handler), nunca em `NEXT_PUBLIC_*`.
+7. Variáveis de ambiente em `.env.example` (`NEXT_PUBLIC_META_PIXEL_ID`, `META_CAPI_TOKEN`, `META_TEST_EVENT_CODE`, `NEXT_PUBLIC_CLARITY_ID`). Vazias = tracking desligado, sem erro. A página nunca dispara InitiateCheckout nem Purchase (vêm da Kiwify). Token da CAPI só em server (route handler), nunca em `NEXT_PUBLIC_*`.
 8. Textos da página em pt-BR; `lang="pt-BR"` no layout.
 
 ## Estrutura
@@ -27,7 +27,7 @@
 - `src/components/motion/` — wrappers reutilizáveis de animação
 - `src/components/ui/` — shadcn/ui (gerado pela CLI; `npx shadcn@latest add <nome>` ou `@bklit/<nome>`)
 - `src/config/site.ts` — dados da oferta e do produto (fonte única)
-- `src/lib/tracking/` — Pixel + CAPI (a implementar)
+- `src/lib/tracking/` — Meta Pixel + CAPI e Clarity (ver `TRACKING.md`). Eventos novos entram em `events.ts` e `index.ts`; a rota `/api/meta` só aceita os nomes listados em `ALLOWED_EVENTS`.
 - `public/images/{app/light,app/dark,lipe,brand}/`
 
 ## Comandos

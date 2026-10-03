@@ -13,7 +13,7 @@ const vertical = site.vturb.vslAspect === "9:16";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
+    <section id="hero" className="relative overflow-hidden pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-24">
       <Background />
 
       <Stagger

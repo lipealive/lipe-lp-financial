@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Plus_Jakarta_Sans } from "next/font/google";
 import { site } from "@/config/site";
+import { TrackingScripts } from "@/components/tracking/tracking-scripts";
+import { PageTracker } from "@/components/tracking/page-tracker";
 import "./globals.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
@@ -45,6 +47,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Marca JS ativo antes de qualquer render: só então as animações começam ocultas (ver globals.css). */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         {children}
+        <TrackingScripts />
+        <PageTracker />
       </body>
     </html>
   );

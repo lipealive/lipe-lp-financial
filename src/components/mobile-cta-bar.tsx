@@ -32,7 +32,7 @@ export function MobileCtaBar() {
                 {formatPrice(site.offer.installments.value)}
               </span>
             </div>
-            <CheckoutButton size="compact" location="mobile-bar" className="h-11 px-5">
+            <CheckoutButton size="compact" location="barra-mobile" className="h-11 px-5">
               Quero organizar
             </CheckoutButton>
           </div>

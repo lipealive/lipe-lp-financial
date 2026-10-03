@@ -90,6 +90,22 @@ export const site = {
     checkoutUrl: "https://pay.kiwify.com.br/aZ9JtZL?afid=XH9VD8ii",
   },
 
+  /** Seção Demo: animação de 45s (vídeo nativo, não VTurb). */
+  demo: {
+    eyebrow: "Em 45 segundos",
+    title: "Pra onde vai o seu dinheiro?",
+    highlight: "Agora você vê.",
+    subtitle: "Do salário ao saldo real: veja como a Alive Finance mostra cada centavo.",
+    video: {
+      /** Versão otimizada pra web (H.264, crf 26, faststart). */
+      src: "/videos/alive-finance-16x9.web.mp4",
+      /** Quadro do título "Dinheiro não some." */
+      poster: "/videos/alive-finance-16x9.poster.jpg",
+      width: 1920,
+      height: 1080,
+    },
+  },
+
   /** Escola: 13 aulas de educação financeira (não são do Lipe), cada uma com ebook em PDF. */
   school: {
     total: 13,
@@ -123,8 +139,6 @@ export const site = {
     accountId: "",
     /** ID do player da VSL principal (vazio = placeholder "VSL em breve"). */
     vslId: "",
-    /** ID do player da demo do app. */
-    demoId: "",
     /** Proporção da VSL: "16:9" (horizontal) ou "9:16" (vertical). */
     vslAspect: "16:9" as VideoAspect,
   },

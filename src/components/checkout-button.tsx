@@ -5,13 +5,14 @@ import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { site } from "@/config/site";
+import { cliqueCheckout, type CheckoutOrigem } from "@/lib/tracking";
 
 type CheckoutButtonProps = {
   children?: ReactNode;
   /** `default` = CTA principal; `compact` = header/barras. */
   size?: "default" | "compact";
-  /** Identifica de onde o clique veio (hero, oferta, header...). Vai junto no tracking. */
-  location?: string;
+  /** Seção de origem do clique (vai no evento CliqueCheckout). */
+  location: CheckoutOrigem;
   className?: string;
 };
 
@@ -31,12 +32,19 @@ function useSearch() {
   );
 }
 
-/** Monta o link da Kiwify a partir do site.ts e repassa os utm_* da URL atual. */
+/** Parâmetros (além de utm_*) repassados da URL atual para o link da Kiwify. */
+const PASSTHROUGH = new Set(["fbclid", "src"]);
+
+/**
+ * Monta o link da Kiwify a partir do site.ts (mantendo o afid) e repassa
+ * utm_*, fbclid e src da URL atual.
+ */
 function buildCheckoutUrl(search: string): string {
   const url = new URL(site.offer.checkoutUrl);
   const current = new URLSearchParams(search);
   current.forEach((value, key) => {
-    if (key.toLowerCase().startsWith("utm_") && value) url.searchParams.set(key, value);
+    const k = key.toLowerCase();
+    if ((k.startsWith("utm_") || PASSTHROUGH.has(k)) && value) url.searchParams.set(key, value);
   });
   return url.toString();
 }
@@ -69,7 +77,7 @@ export function CtaShine() {
 export function CheckoutButton({
   children = "Quero organizar minhas finanças",
   size = "default",
-  location = "unknown",
+  location,
   className,
 }: CheckoutButtonProps) {
   const search = useSearch();
@@ -77,9 +85,9 @@ export function CheckoutButton({
   const reduceMotion = useReducedMotion();
 
   function handleClick() {
-    // TODO TRACKING: disparar InitiateCheckout (Pixel + CAPI) aqui.
-    // Ex.: trackInitiateCheckout({ location, value: site.offer.price, currency: site.offer.currency })
-    void location;
+    // Dispara antes do redirecionamento (Pixel + API de Conversões com keepalive + Clarity).
+    // InitiateCheckout e Purchase NÃO são disparados aqui: vêm da Kiwify.
+    cliqueCheckout(location);
   }
 
   return (
