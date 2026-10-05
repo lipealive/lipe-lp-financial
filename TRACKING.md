@@ -39,6 +39,10 @@ no Pixel (browser) e na CAPI (servidor), e o Meta deduplica os dois.
 | `ViuOferta` | custom | junto com `SecaoVista` da seção `oferta` | — | 1x por sessão | `ViuOferta` |
 
 Notas:
+- `PageView` e `ViewContent` saem com `fbq('track', ...)` (eventos padrão). Só os cinco
+  eventos nossos usam `fbq('trackCustom', ...)`.
+- Os **eventos automáticos do pixel estão desligados**: `fbq('set', 'autoConfig', false, <pixel>)`
+  roda antes do `fbq('init', ...)`. O pixel só envia o que está nesta tabela.
 - **`InitiateCheckout` e `Purchase` não são disparados pela página.** Eles vêm da Kiwify
   (configurar o pixel na Kiwify).
 - Para seções mais altas que a tela (ex.: Vitrine no desktop), "50% visível" também

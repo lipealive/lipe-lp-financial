@@ -9,9 +9,14 @@ export function newEventId(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`;
 }
 
+let initialized = false;
+
 /**
- * Cria a fila `fbq` (mesmo stub do snippet oficial) e faz o init uma única vez.
- * Assim os eventos disparados antes do fbevents.js terminar de carregar ficam na fila.
+ * Garante a fila `fbq` (mesmo stub do snippet oficial) e faz o init UMA vez.
+ * - O init não depende de quem criou `window.fbq`: se o fbevents.js carregar antes
+ *   do nosso primeiro evento, o pixel ainda é inicializado aqui.
+ * - `autoConfig` é desligado ANTES do init: o pixel não dispara eventos automáticos
+ *   (cliques em botões, metadados da página). Só saem os eventos que nós enviamos.
  */
 function ensureFbq(): NonNullable<Window["fbq"]> {
   if (!window.fbq) {
@@ -25,11 +30,20 @@ function ensureFbq(): NonNullable<Window["fbq"]> {
     fbq.queue = [];
     window.fbq = fbq;
     if (!window._fbq) window._fbq = fbq;
-    fbq("init", getPixelId());
+  }
+  if (!initialized) {
+    initialized = true;
+    const pixelId = getPixelId();
+    window.fbq("set", "autoConfig", false, pixelId);
+    window.fbq("init", pixelId);
   }
   return window.fbq;
 }
 
+/**
+ * `track` = evento PADRÃO do Meta (PageView, ViewContent).
+ * `trackCustom` = só os nossos eventos (CliqueCheckout, VideoDemo, Rolagem, SecaoVista, ViuOferta).
+ */
 function send(kind: "track" | "trackCustom", name: string, params?: EventParams) {
   if (typeof window === "undefined" || !metaEnabled()) return;
 
@@ -65,14 +79,17 @@ export function trackStandard(name: StandardEvent, params?: EventParams) {
   send("track", name, params);
 }
 
+/** Evento padrão: fbq('track', 'PageView'). */
 export function trackPageView() {
   send("track", "PageView");
 }
 
+/** Evento padrão: fbq('track', 'ViewContent', {...}). */
 export function trackViewContent(params: { content_name: string; value: number; currency: string }) {
   send("track", "ViewContent", params);
 }
 
+/** Eventos custom: fbq('trackCustom', ...). O tipo impede usar um nome de evento padrão aqui. */
 export function trackCustom(name: CustomEvent, params?: EventParams) {
   send("trackCustom", name, params);
 }
