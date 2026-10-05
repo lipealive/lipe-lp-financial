@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { configureTracking } from "@/lib/tracking/config";
 import {
   SCROLL_STEPS,
   SECTIONS,
@@ -23,8 +24,12 @@ const SECTION_DWELL_MS = 1_000;
  * - SecaoVista (≥50% visível por 1s) e ViuOferta
  * Os três últimos só rodam na landing ("/").
  */
-export function PageTracker() {
+export function PageTracker({ pixelId, clarity }: { pixelId: string; clarity: boolean }) {
   const pathname = usePathname();
+
+  // IDs vêm do servidor (layout) por props. Configura a lib antes de qualquer evento:
+  // os effects abaixo e os cliques rodam sempre depois deste render. Idempotente.
+  configureTracking({ pixelId, clarity });
 
   useEffect(() => {
     pageView();

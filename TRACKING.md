@@ -8,13 +8,18 @@ e nada quebra.
 
 | Variável | Onde é usada | Obrigatória | Observação |
 |---|---|---|---|
-| `NEXT_PUBLIC_META_PIXEL_ID` | browser e servidor | para ligar o Meta | ID do pixel (conjunto de dados). Vazia = Pixel e CAPI desligados. |
+| `META_PIXEL_ID` | servidor (layout e `/api/meta`) | para ligar o Meta | ID do pixel (conjunto de dados). Vazia = Pixel e CAPI desligados. |
 | `META_CAPI_TOKEN` | só servidor (`/api/meta`) | para ligar a CAPI | Token de acesso da API de Conversões. **Nunca** usar prefixo `NEXT_PUBLIC_`. Vazia = a rota responde 204. |
 | `META_TEST_EVENT_CODE` | só servidor | não | Código `TEST12345` da aba "Testar eventos". Usar só enquanto testa e remover depois. |
-| `NEXT_PUBLIC_CLARITY_ID` | browser | para ligar o Clarity | ID do projeto no Clarity. |
+| `CLARITY_ID` | servidor (layout) | para ligar o Clarity | ID do projeto no Clarity. |
 
-As variáveis `NEXT_PUBLIC_*` entram no bundle em tempo de build: depois de criar ou
-alterar qualquer uma na Vercel, é preciso fazer **Redeploy**.
+Nenhuma variável usa o prefixo `NEXT_PUBLIC_`, então todas podem ser marcadas como
+**Sensitive** na Vercel. `META_PIXEL_ID` e `CLARITY_ID` são lidas no layout (Server
+Component) e passadas ao cliente por props. Como a página é estática, esses valores
+são fixados no build: depois de criar ou alterar qualquer um na Vercel, é preciso
+fazer **Redeploy**. Os dois IDs continuam visíveis no HTML da página, como em qualquer
+site com pixel; "Sensitive" só os esconde no painel da Vercel. O `META_CAPI_TOKEN`
+nunca sai do servidor.
 
 Local: copie `.env.example` para `.env.local` (não versionado) e reinicie o `npm run dev`.
 
@@ -61,7 +66,7 @@ O `CheckoutButton` mantém o `afid` do link e repassa da URL atual: `utm_*`, `fb
 
 1. Em **Gerenciador de Eventos → seu pixel → Testar eventos**, copie o código de teste
    (`TEST…`) e salve em `META_TEST_EVENT_CODE` na Vercel. Confirme que
-   `NEXT_PUBLIC_META_PIXEL_ID` e `META_CAPI_TOKEN` estão preenchidas e faça Redeploy.
+   `META_PIXEL_ID` e `META_CAPI_TOKEN` estão preenchidas e faça Redeploy.
 2. Ainda em "Testar eventos", em **Testar eventos do navegador**, cole a URL da página
    e abra. Navegue: espere 15s, role até o fim, toque no vídeo, clique num CTA.
 3. Na lista devem aparecer os eventos da tabela, cada um **duas vezes** (Navegador e

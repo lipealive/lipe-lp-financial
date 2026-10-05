@@ -36,6 +36,11 @@ export const viewport: Viewport = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  // IDs de tracking lidos só no servidor (sem NEXT_PUBLIC_*). Como o layout é
+  // pré-renderizado, o valor é fixado no build e a página continua estática.
+  const pixelId = process.env.META_PIXEL_ID ?? "";
+  const clarityId = process.env.CLARITY_ID ?? "";
+
   return (
     <html
       lang={site.locale}
@@ -47,8 +52,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {/* Marca JS ativo antes de qualquer render: só então as animações começam ocultas (ver globals.css). */}
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
         {children}
-        <TrackingScripts />
-        <PageTracker />
+        <TrackingScripts pixelId={pixelId} clarityId={clarityId} />
+        <PageTracker pixelId={pixelId} clarity={clarityId.length > 0} />
       </body>
     </html>
   );

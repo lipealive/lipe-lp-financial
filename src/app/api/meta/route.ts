@@ -19,7 +19,7 @@ type Body = {
  * O token só existe aqui, no servidor.
  */
 export async function POST(request: NextRequest) {
-  const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const pixelId = process.env.META_PIXEL_ID;
   const token = process.env.META_CAPI_TOKEN;
   if (!pixelId || !token) return new Response(null, { status: 204 });
 

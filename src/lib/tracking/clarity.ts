@@ -13,7 +13,7 @@ function ensureClarity(): NonNullable<Window["clarity"]> {
 
 /** Evento customizado do Clarity (aparece como filtro nas gravações). */
 export function clarityEvent(name: string) {
-  if (!clarityEnabled || typeof window === "undefined") return;
+  if (typeof window === "undefined" || !clarityEnabled()) return;
   try {
     ensureClarity()("event", name);
   } catch {
@@ -23,7 +23,7 @@ export function clarityEvent(name: string) {
 
 /** Tag customizada do Clarity (chave/valor). */
 export function claritySet(key: string, value: string) {
-  if (!clarityEnabled || typeof window === "undefined") return;
+  if (typeof window === "undefined" || !clarityEnabled()) return;
   try {
     ensureClarity()("set", key, value);
   } catch {

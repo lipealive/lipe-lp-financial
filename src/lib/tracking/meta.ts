@@ -1,4 +1,4 @@
-import { META_PIXEL_ID, metaEnabled } from "./config";
+import { getPixelId, metaEnabled } from "./config";
 import type { CustomEvent, EventParams, StandardEvent } from "./events";
 
 /** event_id único por evento: o mesmo vai pro Pixel e pra API de Conversões (deduplicação). */
@@ -25,13 +25,13 @@ function ensureFbq(): NonNullable<Window["fbq"]> {
     fbq.queue = [];
     window.fbq = fbq;
     if (!window._fbq) window._fbq = fbq;
-    fbq("init", META_PIXEL_ID);
+    fbq("init", getPixelId());
   }
   return window.fbq;
 }
 
 function send(kind: "track" | "trackCustom", name: string, params?: EventParams) {
-  if (!metaEnabled || typeof window === "undefined") return;
+  if (typeof window === "undefined" || !metaEnabled()) return;
 
   const eventId = newEventId();
 

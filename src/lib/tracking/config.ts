@@ -1,9 +1,34 @@
 /**
- * IDs públicos de tracking. Vazios = tracking desligado, sem erro.
- * (O token da API de Conversões NÃO fica aqui: só é lido no servidor, em /api/meta.)
+ * Configuração de tracking no cliente.
+ *
+ * Os IDs são lidos no SERVIDOR (process.env.META_PIXEL_ID / CLARITY_ID, no layout)
+ * e chegam aqui por props, via configureTracking(). Não há variável NEXT_PUBLIC_*.
+ * Sem ID, a parte correspondente fica desligada, sem erro.
+ * (O token da API de Conversões nunca chega ao cliente: só é lido em /api/meta.)
  */
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID ?? "";
-export const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID ?? "";
+export type TrackingConfig = {
+  /** ID do pixel do Meta. Vazio = Pixel e CAPI desligados. */
+  pixelId: string;
+  /** O script do Clarity foi injetado? */
+  clarity: boolean;
+};
 
-export const metaEnabled = META_PIXEL_ID.length > 0;
-export const clarityEnabled = CLARITY_ID.length > 0;
+const config: TrackingConfig = { pixelId: "", clarity: false };
+
+/** Chamado uma vez pelo PageTracker, antes de qualquer evento. Idempotente. */
+export function configureTracking(next: TrackingConfig) {
+  config.pixelId = next.pixelId;
+  config.clarity = next.clarity;
+}
+
+export function getPixelId() {
+  return config.pixelId;
+}
+
+export function metaEnabled() {
+  return config.pixelId.length > 0;
+}
+
+export function clarityEnabled() {
+  return config.clarity;
+}
