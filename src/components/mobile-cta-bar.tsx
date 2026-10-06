@@ -27,9 +27,9 @@ export function MobileCtaBar() {
         >
           <div className="flex h-16 items-center justify-between gap-3 px-4">
             <div className="flex flex-col leading-tight">
-              <span className="text-[11px] font-medium text-muted-foreground">{site.offer.installments.count}x de</span>
+              <span className="text-[11px] font-medium text-muted-foreground">ou parcelado no cartão</span>
               <span className="text-lg font-extrabold tracking-tight text-primary tabular-nums">
-                {formatPrice(site.offer.installments.value)}
+                {formatPrice(site.offer.price)}/{site.offer.period}
               </span>
             </div>
             <CheckoutButton size="compact" location="barra-mobile" className="h-11 px-5">

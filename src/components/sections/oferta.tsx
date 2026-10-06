@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useInView } from "motion/react";
 import { Barcode, Check, CreditCard, QrCode, Zap, type LucideIcon } from "lucide-react";
-import { site, formatPrice } from "@/config/site";
+import { site } from "@/config/site";
 import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { AvailabilityStrip } from "@/components/availability-strip";
@@ -17,7 +17,7 @@ const paymentIcons: Record<string, LucideIcon> = {
 export function Oferta() {
   const priceRef = useRef<HTMLDivElement>(null);
   const priceInView = useInView(priceRef, { once: true, amount: 0.6 });
-  const fmt = new Intl.NumberFormat(site.locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const fmt = new Intl.NumberFormat(site.locale, { maximumFractionDigits: 0 });
 
   return (
     <section id="oferta" className="section-dark relative overflow-x-clip scroll-mt-16 py-20 lg:py-28">
@@ -40,22 +40,22 @@ export function Oferta() {
           <div className="animate-border-spin rounded-[26px] bg-conic-brand p-[1.5px] shadow-[0_40px_100px_-40px_rgba(35,181,133,0.6)]">
             <div className="rounded-[24.5px] bg-card px-5 py-7 sm:px-8 sm:py-9">
               <div ref={priceRef} className="flex flex-col items-center">
-                <span className="text-sm font-semibold text-muted-foreground">
-                  {site.offer.installments.count}x de
-                </span>
-                <span className="mt-1 flex items-start gap-1 leading-none font-extrabold tracking-[-0.04em]">
+                <span className="flex items-start gap-1 leading-none font-extrabold tracking-[-0.04em]">
                   <span className="mt-2 text-2xl text-primary sm:mt-3 sm:text-3xl">R$</span>
                   <span className="text-[4.5rem] text-foreground tabular-nums sm:text-[5.5rem]">
                     <CountUp
-                      value={site.offer.installments.value}
+                      value={site.offer.price}
                       active={priceInView}
                       duration={1.4}
                       format={(v) => fmt.format(v)}
                     />
                   </span>
                 </span>
-                <span className="mt-3 text-sm text-muted-foreground sm:text-[15px]">
-                  ou {formatPrice(site.offer.price)} à vista · {site.offer.accessLabel}
+                <span className="mt-3 text-sm font-semibold text-foreground sm:text-[15px]">
+                  por {site.offer.period} · {site.offer.anchor}
+                </span>
+                <span className="mt-1 text-sm text-muted-foreground sm:text-[15px]">
+                  {site.offer.paymentLabel} · {site.offer.accessLabel}
                 </span>
               </div>
 
