@@ -218,17 +218,17 @@ export function DeviceSync() {
   return (
     <div className="rounded-xl border border-border bg-background px-4 py-5">
       <div className="flex items-center justify-center gap-3 sm:gap-5">
-        <Device icon={Smartphone} label="Celular" sub="iPhone e Android" />
+        <Device icon={Smartphone} label="App" sub="iPhone e Android" />
         <div className="relative h-4 w-16 sm:w-24" aria-hidden>
           <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 border-t border-dashed border-primary/40" />
           <span className="absolute top-1/2 left-0 size-2 -translate-y-1/2 animate-sync-dot rounded-full bg-primary" />
           <span className="absolute top-1/2 left-0 size-2 -translate-y-1/2 animate-sync-dot rounded-full bg-primary [animation-delay:1.1s]" />
         </div>
-        <Device icon={Laptop} label="Computador" sub="Mac e Windows" />
+        <Device icon={Laptop} label="Navegador" sub="no computador" />
       </div>
       <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] font-medium text-muted-foreground">
         <span className="size-1.5 rounded-full bg-dot" aria-hidden />
-        Sincronizado agora · direto pelo navegador
+        Sincronizado agora · mesmo login nos dois
       </div>
     </div>
   );

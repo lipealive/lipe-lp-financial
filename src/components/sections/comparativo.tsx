@@ -8,7 +8,7 @@ import { Stagger, StaggerItem } from "@/components/motion";
 
 const rows: { common: string; product: string }[] = [
   { common: "Fórmula quebra do nada", product: "Tudo calculado automaticamente" },
-  { common: "Ruim de usar no celular", product: "Feito para celular e computador" },
+  { common: "Ruim de usar no celular", product: "App no celular e navegador no computador" },
   { common: "Você monta tudo do zero", product: "Pronto pra usar em minutos" },
   { common: "Só números", product: "Gráficos, metas e reserva de emergência" },
   { common: "Sozinho", product: "13 aulas de educação financeira + 5 calculadoras" },

@@ -6,6 +6,7 @@ import { Barcode, Check, CreditCard, QrCode, Zap, type LucideIcon } from "lucide
 import { site, formatPrice } from "@/config/site";
 import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
+import { AvailabilityStrip } from "@/components/availability-strip";
 
 const paymentIcons: Record<string, LucideIcon> = {
   Cartão: CreditCard,
@@ -91,6 +92,7 @@ export function Oferta() {
                   <Zap className="size-3.5 text-primary" aria-hidden />
                   Acesso imediato após a compra
                 </p>
+                <AvailabilityStrip className="mt-1 border-t border-border pt-3" />
               </div>
             </div>
           </div>

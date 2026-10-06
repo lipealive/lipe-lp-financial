@@ -42,7 +42,7 @@ export function VitrineMobile({
       <div className="flex flex-col items-center gap-3">
         <div
           role="tablist"
-          aria-label="Telas da plataforma"
+          aria-label="Telas do app"
           className="inline-flex max-w-full rounded-full border border-border bg-card p-1 shadow-sm"
         >
           {screens.map((s, i) => {

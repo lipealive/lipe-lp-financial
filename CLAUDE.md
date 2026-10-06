@@ -3,7 +3,8 @@
 # Alive Finance (by MultiCap) — Landing page de vendas
 
 ## Contexto
-- Produto: **Alive Finance**, a planilha financeira online do Lipe, feita pela MultiCap. Acesso pelo navegador em https://planilha.multicap.com.br (não é app de loja: nunca falar em "app", "baixar" ou "instalar").
+- Produto: **Alive Finance**, a planilha financeira do Lipe, feita pela MultiCap. Disponível como app (App Store e Google Play) e no navegador do computador (https://planilha.multicap.com.br). Frase padrão: "No app (iPhone e Android) ou no navegador do computador."
+- A página pode citar as lojas, mas **NUNCA linka para elas** e não usa "baixe agora" em CTA: a compra tem que passar pelo nosso checkout (link de afiliado). A linha de disponibilidade é o componente `AvailabilityStrip` (informativa, sem link).
 - Nome do produto vem SEMPRE de `site.productName` (e `site.company` para a MultiCap). Kit de marca em `public/images/brand/alive-finance-brand/` (ler o LEIAME). Regra do ponto: verde no claro, magenta (#E6338A) no escuro, via token `--dot`.
 - As 13 aulas da Escola NÃO são do Lipe: dizer "13 aulas de educação financeira".
 - Objetivo da página: converter tráfego de **Meta Ads (Instagram, celular)** em compras.

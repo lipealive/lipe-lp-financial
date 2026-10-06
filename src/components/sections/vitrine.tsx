@@ -19,7 +19,7 @@ export function Vitrine() {
     <section id="vitrine" className="relative overflow-x-clip py-20 lg:py-28">
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
         <SectionHeading
-          eyebrow="Por dentro da plataforma"
+          eyebrow="Por dentro do app"
           title="Tudo que acontece com seu dinheiro, numa tela só."
           description="Orçamento, visão geral e reserva de emergência conversando entre si, sem fórmula quebrada."
           className="mb-12 lg:mb-20"

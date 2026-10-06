@@ -20,7 +20,7 @@ export function ThemeToggle({ value, onChange, className }: ThemeToggleProps) {
   return (
     <div
       role="radiogroup"
-      aria-label="Tema da plataforma"
+      aria-label="Tema do app"
       className={cn(
         "inline-flex rounded-full border border-border bg-card p-1 shadow-sm",
         className,

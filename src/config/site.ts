@@ -15,9 +15,11 @@ export const site = {
   byline: "by MultiCap",
   /** Empresa (copyright, "by"). */
   company: "MultiCap",
+  /** Linha de disponibilidade (informativa, sem link para as lojas). */
+  availability: "Disponível na App Store e no Google Play",
   tagline: "Planilha financeira inteligente, no seu celular e no computador.",
   description:
-    "A planilha financeira do Lipe, online: orçamento, visão geral, reserva de emergência e metas no celular e no computador.",
+    "A planilha financeira do Lipe, agora em app: orçamento, visão geral, reserva de emergência e metas no app (iPhone e Android) ou no navegador do computador.",
   url: "https://multicap.com.br",
   appUrl: "https://planilha.multicap.com.br",
   /** Domínio exibido na barra do mockup de navegador. */
@@ -82,7 +84,7 @@ export const site = {
       "Investimentos e patrimônio",
       "13 aulas de educação financeira + ebooks em PDF",
       "5 calculadoras financeiras",
-      "Celular e computador",
+      "App (iPhone e Android) e navegador do computador",
       "Modo claro e escuro",
     ],
     /** Formas de pagamento exibidas abaixo do botão. */
@@ -122,8 +124,12 @@ export const site = {
 
   /** Perguntas frequentes. `cta: "whatsapp"` anexa o link de suporte à resposta. */
   faq: [
-    { q: "Como recebo o acesso?", a: "Logo após a compra você recebe por e-mail o acesso à plataforma." },
-    { q: "Funciona no celular?", a: "Sim, no celular e no computador, direto pelo navegador." },
+    { q: "Como recebo o acesso?", a: "Logo após a compra você recebe por e-mail o seu acesso. É o mesmo login no app e no navegador." },
+    { q: "Funciona no celular?", a: "Sim. Tem app para iPhone e Android, e também funciona no navegador do computador." },
+    {
+      q: "Como acesso o app depois de comprar?",
+      a: "Você garante seu acesso aqui pela página. Depois é só baixar o app MultiCap na App Store ou no Google Play e entrar com o mesmo e-mail da compra.",
+    },
     { q: "Preciso saber Excel?", a: "Não. Tudo é calculado automaticamente." },
     { q: "Por quanto tempo tenho acesso?", a: "1 ano. No checkout também dá pra garantir a versão vitalícia." },
     { q: "Preciso conectar minha conta do banco?", a: "Não. Você lança seus gastos ou importa o extrato." },

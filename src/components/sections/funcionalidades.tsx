@@ -112,7 +112,7 @@ export function Funcionalidades() {
               </BentoCard>
             </Slide>
             <Slide>
-              <BentoCard icon={MonitorSmartphone} title="Celular e computador" description="Lance no celular, analise no computador. Tudo sincronizado.">
+              <BentoCard icon={MonitorSmartphone} title="Celular e computador" description="No app (iPhone e Android) ou no navegador do computador. Tudo sincronizado.">
                 <DeviceSync />
               </BentoCard>
             </Slide>

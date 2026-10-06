@@ -8,6 +8,7 @@ import { Stagger, StaggerItem, EASE_OUT } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { VturbPlayer } from "@/components/vturb-player";
 import { DonutCard, ReservaCard, SaldoCard } from "@/components/app-cards";
+import { AvailabilityStrip } from "@/components/availability-strip";
 
 const vertical = site.vturb.vslAspect === "9:16";
 
@@ -25,7 +26,7 @@ export function Hero() {
         <StaggerItem subtle distance={8}>
           <Badge className="h-7 gap-1.5 border-primary/20 bg-primary/10 px-3 text-[13px] font-semibold text-primary">
             <span className="size-1.5 rounded-full bg-dot" aria-hidden />
-            A planilha financeira do Lipe, agora online
+            A planilha financeira do Lipe, agora em app
           </Badge>
         </StaggerItem>
 
@@ -53,6 +54,7 @@ export function Hero() {
 
         <StaggerItem subtle distance={8} className="mt-8 flex w-full flex-col items-center sm:mt-10" data-hero-cta="">
           <CheckoutButton location="hero">Quero organizar minhas finanças</CheckoutButton>
+          <AvailabilityStrip className="mt-3" />
         </StaggerItem>
 
         <StaggerItem subtle distance={8}>
@@ -64,7 +66,7 @@ export function Hero() {
               <ShieldCheck className="size-3.5 text-primary" /> Compra segura Kiwify
             </li>
             <li className="flex items-center gap-1.5">
-              <Smartphone className="size-3.5 text-primary" /> Funciona no celular
+              <Smartphone className="size-3.5 text-primary" /> App e navegador
             </li>
           </ul>
         </StaggerItem>
