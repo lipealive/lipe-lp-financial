@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
-import { Laptop, Moon, Play, Smartphone, Sun } from "lucide-react";
+import { Check, Laptop, MessageCircle, Mic, Moon, Play, Smartphone, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { formatPrice, site } from "@/config/site";
 import { CountUp, EASE_OUT } from "@/components/motion";
@@ -216,19 +216,59 @@ export function LessonStack() {
 
 export function DeviceSync() {
   return (
-    <div className="rounded-xl border border-border bg-background px-4 py-5">
-      <div className="flex items-center justify-center gap-3 sm:gap-5">
+    <div className="rounded-xl border border-border bg-background px-3 py-5">
+      <div className="flex items-center justify-center gap-2">
         <Device icon={Smartphone} label="App" sub="iPhone e Android" />
-        <div className="relative h-4 w-16 sm:w-24" aria-hidden>
-          <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 border-t border-dashed border-primary/40" />
-          <span className="absolute top-1/2 left-0 size-2 -translate-y-1/2 animate-sync-dot rounded-full bg-primary" />
-          <span className="absolute top-1/2 left-0 size-2 -translate-y-1/2 animate-sync-dot rounded-full bg-primary [animation-delay:1.1s]" />
-        </div>
+        <Link />
         <Device icon={Laptop} label="Navegador" sub="no computador" />
+        <Link delay="0.7s" />
+        <Device icon={MessageCircle} label="WhatsApp" sub="com o Consultor" />
       </div>
       <div className="mt-4 flex items-center justify-center gap-1.5 text-[11px] font-medium text-muted-foreground">
         <span className="size-1.5 rounded-full bg-dot" aria-hidden />
-        Sincronizado agora · mesmo login nos dois
+        Sincronizado agora · mesmo login em tudo
+      </div>
+    </div>
+  );
+}
+
+function Link({ delay = "0s" }: { delay?: string }) {
+  return (
+    <div className="relative h-4 w-8 shrink-0 sm:w-10" aria-hidden>
+      <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 border-t border-dashed border-primary/40" />
+      <span className="absolute top-1/2 left-0 size-2 -translate-y-1/2 animate-sync-dot rounded-full bg-primary" style={{ animationDelay: delay }} />
+    </div>
+  );
+}
+
+/* ---------- Consultor com IA: mini conversa ---------- */
+
+export function ConsultorMini() {
+  return (
+    <div className="flex flex-col gap-2 rounded-xl border border-border bg-background p-3">
+      <div className="ml-auto flex max-w-[85%] items-center gap-2 rounded-2xl rounded-br-md bg-primary px-3 py-2 text-[12px] text-white">
+        <Mic className="size-3.5 shrink-0" aria-hidden />
+        <span className="flex h-4 items-end gap-[2px]" aria-hidden>
+          {[0.5, 0.9, 0.6, 1, 0.7, 0.4, 0.8, 0.55, 0.9, 0.6].map((h, i) => (
+            <span
+              key={i}
+              className="w-[3px] origin-bottom animate-wave rounded-full bg-white/90"
+              style={{ height: `${h * 100}%`, animationDelay: `${i * 0.09}s` }}
+            />
+          ))}
+        </span>
+        <span className="tabular-nums">0:04</span>
+      </div>
+      <div className="mr-auto flex max-w-[85%] items-center gap-2 rounded-2xl rounded-bl-md border border-border bg-card px-3 py-2 text-[12px] font-medium">
+        <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
+          <Check className="size-2.5" strokeWidth={3} aria-hidden />
+        </span>
+        Lançado · Uber · R$ 23,50
+      </div>
+      <div className="mr-auto flex items-center gap-1 rounded-2xl rounded-bl-md border border-border bg-card px-3 py-2" aria-label="Consultor digitando">
+        {[0, 1, 2].map((i) => (
+          <span key={i} className="size-1.5 animate-typing rounded-full bg-muted-foreground" style={{ animationDelay: `${i * 0.2}s` }} />
+        ))}
       </div>
     </div>
   );

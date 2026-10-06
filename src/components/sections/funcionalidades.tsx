@@ -5,6 +5,7 @@ import { WheelGesturesPlugin } from "embla-carousel-wheel-gestures";
 import {
   ArrowLeft,
   ArrowRight,
+  BotMessageSquare,
   Calculator,
   GraduationCap,
   LineChart,
@@ -26,6 +27,7 @@ import { FadeIn, Stagger } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { BentoCard } from "@/components/bento/bento-card";
 import {
+  ConsultorMini,
   DeviceSync,
   GoalProgress,
   InvestmentChart,
@@ -78,12 +80,17 @@ export function Funcionalidades() {
         <Stagger stagger={0.07} amount={0.1}>
           <CarouselContent className="-ml-4 items-stretch lg:-ml-5">
             <Slide>
+              <BentoCard icon={BotMessageSquare} title="Consultor com IA" description="Manda texto, áudio ou foto do comprovante no WhatsApp e ele lança pra você.">
+                <ConsultorMini />
+              </BentoCard>
+            </Slide>
+            <Slide>
               <BentoCard icon={Target} title="Metas" description="Defina um objetivo, acompanhe o progresso e veja quanto falta.">
                 <GoalProgress />
               </BentoCard>
             </Slide>
             <Slide>
-              <BentoCard icon={LineChart} title="Investimentos" description="Registre aportes e acompanhe a rentabilidade ao longo do tempo.">
+              <BentoCard icon={LineChart} title="Investimentos" description="Aportes e rentabilidade ao longo do tempo, com gráfico por tipo e logos dos ativos.">
                 <InvestmentChart />
               </BentoCard>
             </Slide>
@@ -112,7 +119,7 @@ export function Funcionalidades() {
               </BentoCard>
             </Slide>
             <Slide>
-              <BentoCard icon={MonitorSmartphone} title="Celular e computador" description="No app (iPhone e Android) ou no navegador do computador. Tudo sincronizado.">
+              <BentoCard icon={MonitorSmartphone} title="App, computador e WhatsApp" description="No app (iPhone e Android), no navegador do computador e pelo WhatsApp. Tudo sincronizado.">
                 <DeviceSync />
               </BentoCard>
             </Slide>

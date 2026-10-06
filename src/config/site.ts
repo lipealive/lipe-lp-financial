@@ -75,6 +75,7 @@ export const site = {
     accessLabel: "acesso por 1 ano",
     /** O que está incluso (card de preço). */
     includes: [
+      "Consultor com IA no WhatsApp",
       "Orçamento completo",
       "Visão geral e gráficos",
       "Reserva de emergência",
@@ -82,12 +83,40 @@ export const site = {
       "Investimentos e patrimônio",
       "13 aulas de educação financeira + ebooks em PDF",
       "5 calculadoras financeiras",
-      "App (iPhone e Android) e navegador do computador",
+      "App para iPhone e Android",
+      "Navegador do computador",
       "Modo claro e escuro",
     ],
     /** Formas de pagamento exibidas abaixo do botão. */
     payment: ["Cartão", "Pix", "Boleto"],
     checkoutUrl: "https://pay.kiwify.com.br/aZ9JtZL?afid=XH9VD8ii",
+  },
+
+  /** Seção "Consultor no WhatsApp" */
+  consultor: {
+    eyebrow: "Novidade",
+    title: "Mandou um áudio, tá lançado.",
+    subtitle:
+      "O Consultor MultiCap é uma inteligência artificial que registra seus gastos e responde suas dúvidas pelo WhatsApp.",
+    /** Conversa do celular (loop). `kind`: text | audio | image. */
+    chat: [
+      { from: "user", kind: "text", text: "Gastei 87 no mercado" },
+      { from: "bot", kind: "text", text: "Lançado ✓ Mercado · R$ 87,00" },
+      { from: "user", kind: "audio", text: "0:04" },
+      { from: "bot", kind: "text", text: "Lançado ✓ Uber · R$ 23,50" },
+      { from: "user", kind: "image", text: "Comprovante · farmácia" },
+      { from: "bot", kind: "text", text: "Lançado ✓ Farmácia · R$ 64,90" },
+      { from: "user", kind: "text", text: "Comprei uma geladeira de 3.600 em 12 vezes" },
+      { from: "bot", kind: "text", text: "Parcelado ✓ 12x de R$ 300,00" },
+      { from: "user", kind: "text", text: "Quanto gastei com restaurante esse mês?" },
+      { from: "bot", kind: "text", text: "R$ 412,30, 18% a menos que agosto 👏" },
+    ] as { from: "user" | "bot"; kind: "text" | "audio" | "image"; text: string }[],
+    features: [
+      "Texto, áudio ou foto do comprovante",
+      "Lança receitas, despesas, parcelas, metas e investimentos",
+      "Responde perguntas sobre o seu dinheiro, com gráfico",
+      "Te lembra de boletos e faturas",
+    ],
   },
 
   /** Seção Demo: animação de 45s (vídeo nativo, não VTurb). */
@@ -123,14 +152,21 @@ export const site = {
   /** Perguntas frequentes. `cta: "whatsapp"` anexa o link de suporte à resposta. */
   faq: [
     { q: "Como recebo o acesso?", a: "Logo após a compra você recebe por e-mail o seu acesso. É o mesmo login no app e no navegador." },
-    { q: "Funciona no celular?", a: "Sim. Tem app para iPhone e Android, e também funciona no navegador do computador." },
     {
-      q: "Como acesso o app depois de comprar?",
-      a: "Você garante seu acesso aqui pela página. Depois é só baixar o app MultiCap na App Store ou no Google Play e entrar com o mesmo e-mail da compra.",
+      q: "Funciona no celular?",
+      a: "Sim. Tem app para iPhone e Android, funciona no navegador do computador e ainda dá pra lançar pelo WhatsApp com o Consultor.",
+    },
+    {
+      q: "Como acesso depois de comprar?",
+      a: "Você garante seu acesso aqui pela página. Depois é só entrar no app MultiCap (App Store ou Google Play) ou no navegador com o mesmo e-mail da compra.",
+    },
+    {
+      q: "Como funciona o Consultor no WhatsApp?",
+      a: "Dentro da plataforma você cadastra seu número e ativa o Consultor. Daí é só mandar mensagem, áudio ou foto do comprovante que ele registra pra você. Tudo pode ser desfeito.",
     },
     { q: "Preciso saber Excel?", a: "Não. Tudo é calculado automaticamente." },
     { q: "Por quanto tempo tenho acesso?", a: "1 ano de acesso." },
-    { q: "Preciso conectar minha conta do banco?", a: "Não. Você lança seus gastos ou importa o extrato." },
+    { q: "Preciso conectar minha conta do banco?", a: "Não. Você lança seus gastos no app, pelo WhatsApp com o Consultor ou importando o extrato." },
     { q: "Quais as formas de pagamento?", a: "Cartão de crédito (à vista ou parcelado), Pix e boleto." },
     { q: "E se eu tiver dúvida?", a: "Nosso suporte responde pelo WhatsApp:", cta: "whatsapp" as const },
   ],

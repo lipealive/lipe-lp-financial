@@ -35,7 +35,7 @@ no Pixel (browser) e na CAPI (servidor), e o Meta deduplica os dois.
 | `CliqueCheckout` | custom | clique em qualquer CTA de compra, antes do redirecionamento | `secao`: `hero`, `funcionalidades`, `demo`, `oferta`, `cta-final`, `barra-mobile` | todo clique | `CliqueCheckout`, `CliqueCheckout_<secao>` e tag `checkout_secao` |
 | `VideoDemo` | custom | primeiro play do vídeo da Demo e ao ativar o som | `acao`: `play` ou `som` | 1x cada por carregamento | — |
 | `Rolagem` | custom | 25%, 50%, 75% e 100% da página | `percent` | 1x por sessão por marco | — |
-| `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
+| `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `consultor`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
 | `ViuOferta` | custom | junto com `SecaoVista` da seção `oferta` | — | 1x por sessão | `ViuOferta` |
 
 Notas:

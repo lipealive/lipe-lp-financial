@@ -4,6 +4,7 @@ import { MobileCtaBar } from "@/components/mobile-cta-bar";
 import { SectionDivider } from "@/components/section-divider";
 import { Hero } from "@/components/sections/hero";
 import { Vitrine } from "@/components/sections/vitrine";
+import { Consultor } from "@/components/sections/consultor";
 import { Funcionalidades } from "@/components/sections/funcionalidades";
 import { Demo } from "@/components/sections/demo";
 import { MarqueeBand } from "@/components/sections/marquee-band";
@@ -21,6 +22,8 @@ export default function Home() {
         <Hero />
         <SectionDivider />
         <Vitrine />
+        <SectionDivider />
+        <Consultor />
         <SectionDivider />
         <Funcionalidades />
         <Demo />

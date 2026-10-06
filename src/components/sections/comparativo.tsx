@@ -7,6 +7,7 @@ import { SectionHeading } from "@/components/section-heading";
 import { Stagger, StaggerItem } from "@/components/motion";
 
 const rows: { common: string; product: string }[] = [
+  { common: "Você anota tudo na mão", product: "Manda um áudio no WhatsApp e pronto" },
   { common: "Fórmula quebra do nada", product: "Tudo calculado automaticamente" },
   { common: "Ruim de usar no celular", product: "App no celular e navegador no computador" },
   { common: "Você monta tudo do zero", product: "Pronto pra usar em minutos" },

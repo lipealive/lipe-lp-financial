@@ -40,7 +40,7 @@ export function Hero() {
         <StaggerItem subtle distance={8}>
           <p className="mt-5 max-w-[34ch] text-base leading-relaxed text-pretty text-muted-foreground sm:max-w-xl sm:text-lg lg:text-xl">
             A {site.productName} organiza receitas, gastos, reserva de emergência, metas e
-            investimentos num só lugar — no celular e no computador.
+            investimentos num só lugar — no app, no computador e no WhatsApp.
           </p>
         </StaggerItem>
 
