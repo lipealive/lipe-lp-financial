@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { FadeIn, Stagger, StaggerItem } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { videoDemo } from "@/lib/tracking";
+import { useOffer } from "@/components/offer-context";
 
 const chips: { label: string; icon: LucideIcon }[] = [
   { label: "Orçamento", icon: ArrowLeftRight },
@@ -82,7 +83,7 @@ export function Demo() {
  * - O poster é um next/image lazy por baixo do vídeo.
  */
 function DemoVideo() {
-  const { src, poster, width, height } = site.demo.video;
+  const { src, poster, width, height } = useOffer().video;
   const frameRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const reduceMotion = useReducedMotion();

@@ -62,12 +62,16 @@ export const site = {
   },
 
   /**
-   * Ofertas disponíveis. A página usa a oferta ativa (ACTIVE_OFFER → `offer`).
-   * Para trocar de oferta, adicione uma chave aqui e mude ACTIVE_OFFER.
+   * Ofertas do teste A/B. Cada chave vira uma rota estática /<slug> no build
+   * (ver src/app/[oferta]/page.tsx). A raiz "/" usa DEFAULT_OFFER.
+   * Para adicionar uma oferta: copie um bloco, troque id/slug/preço/parcela/
+   * checkout/sck e, se quiser, aponte `demoVideo` para outra pasta.
    */
   offers: {
     p97: {
       id: "p97",
+      /** Caminho da rota: /97 */
+      slug: "97",
       /** Preço por ano (BRL). */
       price: 97,
       /** Período coberto pelo preço. */
@@ -85,6 +89,24 @@ export const site = {
       checkoutUrl: "https://pay.kiwify.com.br/q15UnQk?afid=XH9VD8ii",
       /** Parâmetro sck da Kiwify (rastreio de origem). */
       sck: "p97",
+    },
+    p127: {
+      id: "p127",
+      slug: "127",
+      price: 127,
+      period: "ano",
+      currency: "BRL",
+      anchor: "menos de R$ 10,60 por mês",
+      installments: { count: 12, value: 13.14 },
+      accessLabel: "acesso por 1 ano",
+      lifetimeAddon: 40,
+      checkoutUrl: "https://pay.kiwify.com.br/hor8IvC?afid=XH9VD8ii",
+      sck: "p127",
+      /** Vídeo da Demo próprio. Se o arquivo não existir no build, usa o padrão (site.demo.video). */
+      demoVideo: {
+        src: "/videos/p127/alive-finance-16x9.web.mp4",
+        poster: "/videos/p127/alive-finance-16x9.poster.jpg",
+      },
     },
   },
 
@@ -229,16 +251,47 @@ export const site = {
 
 export type OfferId = keyof typeof site.offers;
 
-/** Oferta ativa na página. Só existe p97 por enquanto. */
-export const ACTIVE_OFFER: OfferId = "p97";
+/** Oferta da raiz "/" (tráfego orgânico e link da bio). */
+export const DEFAULT_OFFER: OfferId = "p97";
 
-/** Atalho: a oferta ativa + conteúdo comum. É o que as seções usam. */
-export const offer = { ...site.offers[ACTIVE_OFFER], ...site.offerContent };
-export type Offer = typeof offer;
+/** Todas as ofertas, na ordem do site.ts. */
+export const OFFER_IDS = Object.keys(site.offers) as OfferId[];
+
+/** Oferta completa: dados da oferta + conteúdo comum do card de preço. */
+export type Offer = {
+  id: OfferId;
+  slug: string;
+  price: number;
+  period: string;
+  currency: string;
+  anchor: string;
+  installments: { count: number; value: number };
+  accessLabel: string;
+  lifetimeAddon: number;
+  checkoutUrl: string;
+  sck: string;
+  demoVideo?: { src: string; poster: string };
+  includes: readonly string[];
+  payment: readonly string[];
+};
+
+/** Oferta pronta pra página: com o vídeo da Demo já resolvido (ver src/config/offer-page.ts). */
+export type PageOffer = Offer & {
+  video: { src: string; poster: string; width: number; height: number };
+};
+
+export function getOffer(id: OfferId): Offer {
+  return { ...site.offers[id], ...site.offerContent } as Offer;
+}
+
+/** "97" → "p97". Undefined se o slug não existir. */
+export function offerIdFromSlug(slug: string): OfferId | undefined {
+  return OFFER_IDS.find((id) => site.offers[id].slug === slug);
+}
 
 export type Site = typeof site;
 
-export function formatPrice(value: number, currency: string = offer.currency) {
+export function formatPrice(value: number, currency: string = "BRL") {
   return new Intl.NumberFormat(site.locale, {
     style: "currency",
     currency,

@@ -3,7 +3,8 @@
 import { useRef } from "react";
 import { useInView } from "motion/react";
 import { Barcode, Check, CreditCard, QrCode, Zap, type LucideIcon } from "lucide-react";
-import { formatPrice, offer, site } from "@/config/site";
+import { formatPrice, site } from "@/config/site";
+import { useOffer } from "@/components/offer-context";
 import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { AvailabilityStrip } from "@/components/availability-strip";
@@ -15,6 +16,7 @@ const paymentIcons: Record<string, LucideIcon> = {
 };
 
 export function Oferta() {
+  const offer = useOffer();
   const priceRef = useRef<HTMLDivElement>(null);
   const priceInView = useInView(priceRef, { once: true, amount: 0.6 });
   const fmt = new Intl.NumberFormat(site.locale, { maximumFractionDigits: 0 });

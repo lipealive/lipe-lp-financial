@@ -1,4 +1,5 @@
-import { offer, site } from "@/config/site";
+import { site } from "@/config/site";
+import { getTrackingOffer } from "./config";
 import { clarityEvent, claritySet } from "./clarity";
 import type { CheckoutOrigem, ScrollPercent, Secao } from "./events";
 import { trackCustom, trackPageView, trackViewContent } from "./meta";
@@ -16,18 +17,20 @@ export function pageView() {
 
 /** ViewContent: uma vez por sessão (15s na página OU 50% de rolagem). */
 export function viewContentOnce() {
+  const offer = getTrackingOffer();
+  if (!offer) return; // só na landing
   if (!oncePerSession("ViewContent")) return;
+  // `oferta` é anexado automaticamente em todos os eventos (meta.ts).
   trackViewContent({
     content_name: site.productName,
     value: offer.price,
     currency: offer.currency,
-    oferta: offer.id,
   });
 }
 
 /** Clique num CTA de compra, com a seção de origem. Dispara em todo clique. */
 export function cliqueCheckout(secao: CheckoutOrigem) {
-  trackCustom("CliqueCheckout", { secao, oferta: offer.id });
+  trackCustom("CliqueCheckout", { secao });
   claritySet("checkout_secao", secao);
   clarityEvent("CliqueCheckout");
   clarityEvent(`CliqueCheckout_${secao}`);

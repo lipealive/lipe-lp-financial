@@ -1,4 +1,4 @@
-import { getPixelId, metaEnabled } from "./config";
+import { getPixelId, getTrackingOffer, metaEnabled } from "./config";
 import type { CustomEvent, EventParams, StandardEvent } from "./events";
 
 /** event_id único por evento: o mesmo vai pro Pixel e pra API de Conversões (deduplicação). */
@@ -48,9 +48,12 @@ function send(kind: "track" | "trackCustom", name: string, params?: EventParams)
   if (typeof window === "undefined" || !metaEnabled()) return;
 
   const eventId = newEventId();
+  // Todo evento leva a oferta da página (teste A/B), quando houver.
+  const offer = getTrackingOffer();
+  const data: EventParams = { ...(params ?? {}), ...(offer ? { oferta: offer.id } : {}) };
 
   try {
-    ensureFbq()(kind, name, params ?? {}, { eventID: eventId });
+    ensureFbq()(kind, name, data, { eventID: eventId });
   } catch {
     // tracking nunca pode quebrar a página
   }
@@ -66,7 +69,7 @@ function send(kind: "track" | "trackCustom", name: string, params?: EventParams)
         event_name: name,
         event_id: eventId,
         event_source_url: window.location.href,
-        custom_data: params,
+        custom_data: data,
         fbclid,
       }),
     }).catch(() => {});
@@ -85,7 +88,7 @@ export function trackPageView() {
 }
 
 /** Evento padrão: fbq('track', 'ViewContent', {...}). */
-export function trackViewContent(params: { content_name: string; value: number; currency: string; oferta: string }) {
+export function trackViewContent(params: { content_name: string; value: number; currency: string }) {
   send("track", "ViewContent", params);
 }
 

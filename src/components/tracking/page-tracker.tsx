@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { configureTracking } from "@/lib/tracking/config";
+import { configureTracking, getTrackingOffer } from "@/lib/tracking/config";
 import {
   SCROLL_STEPS,
   SECTIONS,
@@ -22,7 +22,7 @@ const SECTION_DWELL_MS = 1_000;
  * - ViewContent (15s OU 50% de rolagem)
  * - Rolagem 25/50/75/100
  * - SecaoVista (≥50% visível por 1s) e ViuOferta
- * Os três últimos só rodam na landing ("/").
+ * Os três últimos só rodam nas landings (rotas com oferta).
  */
 export function PageTracker({ pixelId, clarity }: { pixelId: string; clarity: boolean }) {
   const pathname = usePathname();
@@ -36,7 +36,8 @@ export function PageTracker({ pixelId, clarity }: { pixelId: string; clarity: bo
   }, [pathname]);
 
   useEffect(() => {
-    if (pathname !== "/") return;
+    // Só nas landings (/, /97, /127...): são as rotas com oferta.
+    if (!getTrackingOffer()) return;
 
     /* ---------- ViewContent por tempo ---------- */
     const timer = window.setTimeout(viewContentOnce, VIEW_CONTENT_DELAY_MS);

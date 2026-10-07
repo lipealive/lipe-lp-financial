@@ -28,11 +28,15 @@ Local: copie `.env.example` para `.env.local` (não versionado) e reinicie o `np
 Cada evento do Meta sai com um `event_id` único (`crypto.randomUUID`). O mesmo ID vai
 no Pixel (browser) e na CAPI (servidor), e o Meta deduplica os dois.
 
+**Todos os eventos das landings levam o parâmetro `oferta`** (`p97`, `p127`...), anexado
+automaticamente em `src/lib/tracking/meta.ts`. Fora das landings (ex.: `/privacidade`) ele
+não vai.
+
 | Evento | Tipo | Quando dispara | Parâmetros | Frequência | Clarity |
 |---|---|---|---|---|---|
 | `PageView` | padrão | carregamento e troca de rota | — | toda página | — |
-| `ViewContent` | padrão | 15s na página **ou** 50% de rolagem, o que vier primeiro | `content_name`, `value`, `currency`, `oferta` (id da oferta ativa, ex.: `p97`) | 1x por sessão | — |
-| `CliqueCheckout` | custom | clique em qualquer CTA de compra, antes do redirecionamento | `secao`: `hero`, `funcionalidades`, `demo`, `oferta`, `cta-final`, `barra-mobile`; `oferta`: id da oferta ativa | todo clique | `CliqueCheckout`, `CliqueCheckout_<secao>` e tag `checkout_secao` |
+| `ViewContent` | padrão | 15s na página **ou** 50% de rolagem, o que vier primeiro | `content_name`, `value` (preço da oferta da rota: 97, 127...), `currency` | 1x por sessão | — |
+| `CliqueCheckout` | custom | clique em qualquer CTA de compra, antes do redirecionamento | `secao`: `hero`, `funcionalidades`, `demo`, `oferta`, `cta-final`, `barra-mobile` | todo clique | `CliqueCheckout`, `CliqueCheckout_<secao>` e tag `checkout_secao` |
 | `VideoDemo` | custom | primeiro play do vídeo da Demo e ao ativar o som | `acao`: `play` ou `som` | 1x cada por carregamento | — |
 | `Rolagem` | custom | 25%, 50%, 75% e 100% da página | `percent` | 1x por sessão por marco | — |
 | `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `consultor`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
@@ -51,9 +55,49 @@ Notas:
 - "1x por sessão" usa `sessionStorage` (chaves `af_trk:*`). Para repetir um teste,
   abra uma aba nova/anônima.
 
+## Teste A/B de preço (ofertas por URL)
+
+Cada oferta tem a sua URL, gerada no build. A página, o checkout, o vídeo da Demo, a
+imagem de compartilhamento e o tracking seguem a oferta da URL.
+
+| URL | Oferta | Preço | Checkout (Kiwify) | Uso |
+|---|---|---|---|---|
+| `/` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | tráfego orgânico, link da bio |
+| `/97` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | **conjunto de anúncios A** |
+| `/127` | `p127` | R$ 127/ano · 12x de R$ 13,14 | `hor8IvC` · `sck=p127` | **conjunto de anúncios B** |
+
+- Nos anúncios, use sempre `/97` ou `/127` (nunca `/`), com as UTMs de costume
+  (ex.: `https://<domínio>/127?utm_source=meta&utm_campaign=...&utm_content=...`).
+- `/97` e `/127` têm `noindex` e `<link rel="canonical">` para a raiz: não concorrem no Google.
+- Qualquer outro caminho (`/99`, `/p97`) dá 404.
+- Cada rota tem a própria imagem de Open Graph com o preço (`/127/opengraph-image`).
+
+**Como comparar as ofertas**
+
+- **Meta (Gerenciador de Anúncios):** quebre os resultados por conjunto de anúncios, ou
+  crie conversões personalizadas filtrando o parâmetro `oferta` (ex.: `CliqueCheckout`
+  com `oferta = p127`).
+- **Kiwify:** as vendas vêm de produtos diferentes (`q15UnQk` e `hor8IvC`) e com `sck`
+  diferente, então dá pra separar por produto ou por `sck` no relatório de vendas.
+- **Clarity:** cada sessão recebe a tag `oferta` (`p97`/`p127`). Em **Filters → Custom tags
+  → oferta** você assiste só as gravações de uma oferta.
+
+### Como adicionar uma oferta
+
+1. Em `src/config/site.ts`, dentro de `site.offers`, copie um bloco (ex.: `p127`) com uma
+   chave nova (ex.: `p147`) e troque: `id`, `slug` (vira a URL, ex.: `"147"` → `/147`),
+   `price`, `anchor`, `installments`, `checkoutUrl` (produto da Kiwify **com** `afid`) e `sck`.
+2. Vídeo da Demo próprio (opcional): `demoVideo` apontando para `public/videos/<pasta>/`.
+   Se os arquivos não existirem no build, a página usa o vídeo padrão (p97).
+3. Rode o build: a rota nova aparece como `● /147` na tabela. Nada mais precisa mudar.
+4. Para mudar a oferta da raiz `/`, altere `DEFAULT_OFFER` no `site.ts`.
+
+As rotas são estáticas: qualquer mudança em ofertas ou vídeos só vale depois de um novo deploy.
+
 ## Link da Kiwify
 
-O `CheckoutButton` usa o link da oferta ativa (`offer.checkoutUrl`, com `afid`), acrescenta `sck=<id da oferta>` e repassa da URL atual: `utm_*`, `fbclid` e `src`.
+O `CheckoutButton` usa o link da oferta da rota (`checkoutUrl`, com `afid`), acrescenta
+`sck=<id da oferta>` e repassa da URL atual: `utm_*`, `fbclid` e `src`.
 
 ## API de Conversões (`POST /api/meta`)
 
@@ -92,15 +136,17 @@ seus `eventID`.
    `clarity.ms/tag/<id>` com status 200 e chamadas `collect`.
 2. No painel do Clarity, **Recordings** leva alguns minutos (até ~30 min no primeiro uso)
    para listar a sessão. **Dashboard → Live** mostra visitantes em tempo real.
-3. Para filtrar gravações: **Filters → Custom events** e escolha `ViuOferta`,
+3. Para separar o teste A/B: **Filters → Custom tags → `oferta`** (`p97` ou `p127`).
+4. Para filtrar gravações: **Filters → Custom events** e escolha `ViuOferta`,
    `CliqueCheckout`, `CliqueCheckout_<secao>` ou `SecaoVista_<secao>`. Em
    **Custom tags**, `checkout_secao` mostra de onde veio o clique.
-4. O mascaramento é o padrão do Clarity (campos de formulário e conteúdo sensível
+5. O mascaramento é o padrão do Clarity (campos de formulário e conteúdo sensível
    mascarados). Nada foi alterado no código.
 
 ## Onde está o código
 
-- `src/lib/tracking/` — config, tipos de evento, Pixel (`meta.ts`), Clarity, "uma vez por sessão" e as funções de alto nível (`index.ts`).
+- `src/lib/tracking/` — config (inclui a oferta atual), tipos de evento, Pixel (`meta.ts`, anexa `oferta`), Clarity, "uma vez por sessão" e as funções de alto nível (`index.ts`).
+- `src/components/offer-context.tsx` — oferta da rota para as seções; informa a oferta ao tracking e ao Clarity.
 - `src/components/tracking/tracking-scripts.tsx` — scripts de terceiros via `next/script`.
 - `src/components/tracking/page-tracker.tsx` — PageView, ViewContent, Rolagem, SecaoVista.
 - `src/app/api/meta/route.ts` — API de Conversões.

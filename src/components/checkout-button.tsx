@@ -4,7 +4,8 @@ import { useSyncExternalStore, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { offer } from "@/config/site";
+import type { Offer } from "@/config/site";
+import { useOffer } from "@/components/offer-context";
 import { cliqueCheckout, type CheckoutOrigem } from "@/lib/tracking";
 
 type CheckoutButtonProps = {
@@ -36,10 +37,10 @@ function useSearch() {
 const PASSTHROUGH = new Set(["fbclid", "src"]);
 
 /**
- * Monta o link da Kiwify a partir do site.ts (mantendo o afid) e repassa
+ * Monta o link da Kiwify da oferta da rota (mantendo o afid), acrescenta o sck e repassa
  * utm_*, fbclid e src da URL atual.
  */
-function buildCheckoutUrl(search: string): string {
+function buildCheckoutUrl(offer: Offer, search: string): string {
   const url = new URL(offer.checkoutUrl);
   url.searchParams.set("sck", offer.sck);
   const current = new URLSearchParams(search);
@@ -82,7 +83,8 @@ export function CheckoutButton({
   className,
 }: CheckoutButtonProps) {
   const search = useSearch();
-  const href = buildCheckoutUrl(search);
+  const offer = useOffer();
+  const href = buildCheckoutUrl(offer, search);
   const reduceMotion = useReducedMotion();
 
   function handleClick() {

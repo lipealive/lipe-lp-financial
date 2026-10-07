@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { formatPrice, offer } from "@/config/site";
+import { formatPrice } from "@/config/site";
+import { useOffer } from "@/components/offer-context";
 import { CheckoutButton } from "@/components/checkout-button";
 
 /**
@@ -11,6 +12,7 @@ import { CheckoutButton } from "@/components/checkout-button";
  * ou o rodapé estão visíveis.
  */
 export function MobileCtaBar() {
+  const offer = useOffer();
   const visible = useBarVisibility();
   const reduceMotion = useReducedMotion();
 

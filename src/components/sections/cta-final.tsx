@@ -1,9 +1,9 @@
 import Image from "next/image";
-import { offer, site } from "@/config/site";
+import { site, type Offer } from "@/config/site";
 import { FadeIn } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 
-export function CtaFinal() {
+export function CtaFinal({ offer }: { offer: Offer }) {
   return (
     <section id="cta-final" className="section-dark relative overflow-x-clip">
       <div aria-hidden className="pointer-events-none absolute inset-0">

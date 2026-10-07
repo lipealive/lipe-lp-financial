@@ -32,3 +32,16 @@ export function metaEnabled() {
 export function clarityEnabled() {
   return config.clarity;
 }
+
+/** Oferta da página atual (vem do OfferProvider). Null fora da landing. */
+export type TrackingOffer = { id: string; price: number; currency: string };
+
+let currentOffer: TrackingOffer | null = null;
+
+export function setTrackingOffer(offer: TrackingOffer | null) {
+  currentOffer = offer;
+}
+
+export function getTrackingOffer() {
+  return currentOffer;
+}
