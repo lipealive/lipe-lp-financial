@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import {
   BellRing,
   Camera,
   Check,
   ChartPie,
+  MessageCircleQuestion,
   ListChecks,
   MessageSquareText,
   Mic,
@@ -60,7 +62,84 @@ export function Consultor() {
           </Stagger>
         </div>
       </div>
+
+      <AskBlock />
+      <ActivateStrip />
     </section>
+  );
+}
+
+/* ---------- "Pergunte e receba a resposta com gráfico." ---------- */
+
+function AskBlock() {
+  const { ask } = site.consultor;
+  return (
+    <div className="mx-auto mt-20 grid w-full max-w-6xl grid-cols-1 gap-10 px-4 sm:px-6 lg:mt-28 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-center lg:gap-16">
+      <FadeIn className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left">
+        <span className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Perguntas</span>
+        <h3 className="max-w-[18ch] text-[1.75rem] leading-[1.1] font-extrabold tracking-[-0.03em] text-balance sm:text-3xl lg:text-4xl">
+          {ask.title}
+        </h3>
+        <p className="max-w-lg text-base text-pretty text-muted-foreground sm:text-lg">{ask.text}</p>
+        <Stagger stagger={0.08} className="mt-2 flex flex-wrap justify-center gap-2 lg:justify-start">
+          {ask.examples.map((q) => (
+            <StaggerItem key={q} distance={10}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-2 text-[13px] font-semibold sm:text-sm">
+                <MessageCircleQuestion className="size-4 text-primary" aria-hidden />
+                {q}
+              </span>
+            </StaggerItem>
+          ))}
+        </Stagger>
+      </FadeIn>
+
+      <FadeIn className="relative mx-auto w-full max-w-[400px] lg:max-w-none" amount={0.25} distance={24}>
+        <div aria-hidden className="absolute -inset-8 -z-10 rounded-[40px] bg-primary/15 blur-3xl" />
+        <div className="relative rotate-2 overflow-hidden rounded-3xl border border-border bg-card shadow-[0_40px_90px_-30px_rgba(14,26,21,0.45)] transition-transform duration-500 hover:rotate-0">
+          <Image
+            src={ask.image.src}
+            alt={`Resposta do Consultor ${site.company} com gráfico de gastos por categoria`}
+            width={ask.image.width}
+            height={ask.image.height}
+            sizes="(min-width: 1024px) 480px, 100vw"
+            loading="lazy"
+            className="h-auto w-full"
+          />
+          <span className="absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-border bg-white/90 px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-sm backdrop-blur">
+            <span className="size-1.5 rounded-full bg-dot" aria-hidden />
+            {ask.badge}
+          </span>
+        </div>
+      </FadeIn>
+    </div>
+  );
+}
+
+/* ---------- "Ativa em menos de 1 minuto" ---------- */
+
+function ActivateStrip() {
+  const { activate } = site.consultor;
+  return (
+    <FadeIn className="mx-auto mt-16 w-full max-w-6xl px-4 sm:px-6 lg:mt-24" amount={0.3}>
+      <div className="rounded-3xl border border-border bg-card px-5 py-7 sm:px-8 sm:py-9">
+        <h3 className="text-center text-xl font-extrabold tracking-tight sm:text-2xl">{activate.title}</h3>
+        <Stagger stagger={0.12} className="mt-6 flex flex-col gap-3 md:flex-row md:items-stretch md:gap-0">
+          {activate.steps.map((step, i) => (
+            <StaggerItem
+              key={step}
+              distance={10}
+              className="relative flex flex-1 items-center gap-3 md:flex-col md:px-4 md:text-center md:not-last:after:absolute md:not-last:after:top-5 md:not-last:after:left-[calc(50%+1.5rem)] md:not-last:after:w-[calc(100%-3rem)] md:not-last:after:border-t md:not-last:after:border-dashed md:not-last:after:border-primary/40"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-extrabold text-white shadow-[0_8px_20px_-8px_rgba(30,160,118,0.8)]">
+                {i + 1}
+              </span>
+              <span className="text-[15px] font-semibold sm:text-base md:max-w-[22ch]">{step}</span>
+            </StaggerItem>
+          ))}
+        </Stagger>
+        <p className="mt-6 text-center text-[13px] text-muted-foreground sm:text-sm">{activate.note}</p>
+      </div>
+    </FadeIn>
   );
 }
 

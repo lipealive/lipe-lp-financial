@@ -117,6 +117,25 @@ export const site = {
       "Responde perguntas sobre o seu dinheiro, com gráfico",
       "Te lembra de boletos e faturas",
     ],
+    /** Bloco "Pergunte e receba a resposta com gráfico." */
+    ask: {
+      title: "Pergunte e receba a resposta com gráfico.",
+      text: "Ele lê os seus próprios números e responde na hora. Quando faz sentido, o gráfico vem junto.",
+      examples: [
+        "Quanto gastei por categoria esse mês?",
+        "Meu saldo está melhor que no mês passado?",
+        "Quanto falta pra minha meta da viagem?",
+      ],
+      /** Print real do app (1100x1330). */
+      image: { src: "/images/app/consultor/consultor-resposta-grafico.png", width: 1100, height: 1330 },
+      badge: "Print real do app",
+    },
+    /** Faixa "Ativa em menos de 1 minuto" */
+    activate: {
+      title: "Ativa em menos de 1 minuto",
+      steps: ["Informe seu WhatsApp", "Mande o código que aparece na tela", "Pronto: é só conversar"],
+      note: "Prefere não usar o WhatsApp? O chat também funciona dentro do app.",
+    },
   },
 
   /** Seção Demo: animação de 45s (vídeo nativo, não VTurb). */
