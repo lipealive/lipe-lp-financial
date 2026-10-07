@@ -1,11 +1,9 @@
 "use client";
 
-import { useRef } from "react";
-import { useInView } from "motion/react";
 import { Barcode, Check, CreditCard, QrCode, Zap, type LucideIcon } from "lucide-react";
 import { formatPrice, site } from "@/config/site";
 import { useOffer } from "@/components/offer-context";
-import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/motion";
+import { FadeIn, Stagger, StaggerItem } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { AvailabilityStrip } from "@/components/availability-strip";
 
@@ -17,8 +15,6 @@ const paymentIcons: Record<string, LucideIcon> = {
 
 export function Oferta() {
   const offer = useOffer();
-  const priceRef = useRef<HTMLDivElement>(null);
-  const priceInView = useInView(priceRef, { once: true, amount: 0.6 });
   const fmt = new Intl.NumberFormat(site.locale, { maximumFractionDigits: 0 });
 
   return (
@@ -41,16 +37,12 @@ export function Oferta() {
         <FadeIn className="mt-10 w-full max-w-lg lg:mt-14" amount={0.2}>
           <div className="animate-border-spin rounded-[26px] bg-conic-brand p-[1.5px] shadow-[0_40px_100px_-40px_rgba(35,181,133,0.6)]">
             <div className="rounded-[24.5px] bg-card px-5 py-7 sm:px-8 sm:py-9">
-              <div ref={priceRef} className="flex flex-col items-center">
+              <div className="flex flex-col items-center">
                 <span className="flex items-start gap-1 leading-none font-extrabold tracking-[-0.04em]">
                   <span className="mt-2 text-2xl text-primary sm:mt-3 sm:text-3xl">R$</span>
+                  {/* Valor final já no HTML do servidor (sem count-up): nunca aparece "R$ 0". */}
                   <span className="text-[4.5rem] text-foreground tabular-nums sm:text-[5.5rem]">
-                    <CountUp
-                      value={offer.price}
-                      active={priceInView}
-                      duration={1.4}
-                      format={(v) => fmt.format(v)}
-                    />
+                    {fmt.format(offer.price)}
                   </span>
                 </span>
                 <span className="mt-3 text-sm font-semibold text-foreground sm:text-[15px]">

@@ -78,7 +78,7 @@ export async function renderOgImage(offer: Offer) {
           }}
         >
           <div style={{ width: 10, height: 10, borderRadius: 999, background: "#E6338A" }} />
-          {site.appHost}
+          {new URL(site.url).host}
         </div>
       </div>
     ),

@@ -20,7 +20,8 @@ export const site = {
   tagline: "Planilha financeira inteligente, no seu celular e no computador.",
   description:
     "A planilha financeira do Lipe, agora em app: orçamento, visão geral, reserva de emergência e metas no app (iPhone e Android) ou no navegador do computador.",
-  url: "https://multicap.com.br",
+  /** URL base do nosso site (metadataBase: canonical e Open Graph). */
+  url: "https://finance.lipealive.com.br",
   appUrl: "https://planilha.multicap.com.br",
   /** Domínio exibido na barra do mockup de navegador. */
   appHost: "planilha.multicap.com.br",

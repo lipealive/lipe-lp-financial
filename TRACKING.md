@@ -62,12 +62,12 @@ imagem de compartilhamento e o tracking seguem a oferta da URL.
 
 | URL | Oferta | Preço | Checkout (Kiwify) | Uso |
 |---|---|---|---|---|
-| `/` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | tráfego orgânico, link da bio |
-| `/97` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | **conjunto de anúncios A** |
-| `/127` | `p127` | R$ 127/ano · 12x de R$ 13,14 | `hor8IvC` · `sck=p127` | **conjunto de anúncios B** |
+| `https://finance.lipealive.com.br/` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | tráfego orgânico, link da bio |
+| `https://finance.lipealive.com.br/97` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | **conjunto de anúncios A** |
+| `https://finance.lipealive.com.br/127` | `p127` | R$ 127/ano · 12x de R$ 13,14 | `hor8IvC` · `sck=p127` | **conjunto de anúncios B** |
 
 - Nos anúncios, use sempre `/97` ou `/127` (nunca `/`), com as UTMs de costume
-  (ex.: `https://<domínio>/127?utm_source=meta&utm_campaign=...&utm_content=...`).
+  (ex.: `https://finance.lipealive.com.br/127?utm_source=meta&utm_campaign=...&utm_content=...`).
 - `/97` e `/127` têm `noindex` e `<link rel="canonical">` para a raiz: não concorrem no Google.
 - Qualquer outro caminho (`/99`, `/p97`) dá 404.
 - Cada rota tem a própria imagem de Open Graph com o preço (`/127/opengraph-image`).
