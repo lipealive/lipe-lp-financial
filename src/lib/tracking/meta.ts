@@ -48,9 +48,12 @@ function send(kind: "track" | "trackCustom", name: string, params?: EventParams)
   if (typeof window === "undefined" || !metaEnabled()) return;
 
   const eventId = newEventId();
-  // Todo evento leva a oferta da página (teste A/B), quando houver.
+  // Todo evento leva a oferta e a versão da página (teste A/B), quando houver.
   const offer = getTrackingOffer();
-  const data: EventParams = { ...(params ?? {}), ...(offer ? { oferta: offer.id } : {}) };
+  const data: EventParams = {
+    ...(params ?? {}),
+    ...(offer ? { oferta: offer.id, versao: offer.versao } : {}),
+  };
 
   try {
     ensureFbq()(kind, name, data, { eventID: eventId });

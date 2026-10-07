@@ -28,15 +28,17 @@ Local: copie `.env.example` para `.env.local` (não versionado) e reinicie o `np
 Cada evento do Meta sai com um `event_id` único (`crypto.randomUUID`). O mesmo ID vai
 no Pixel (browser) e na CAPI (servidor), e o Meta deduplica os dois.
 
-**Todos os eventos das landings levam o parâmetro `oferta`** (`p97`, `p127`...), anexado
-automaticamente em `src/lib/tracking/meta.ts`. Fora das landings (ex.: `/privacidade`) ele
-não vai.
+**Todos os eventos das landings levam os parâmetros `oferta`** (`p97`, `p127`) **e `versao`**
+(`vsl` = com VSL no hero, `sv` = sem VSL), anexados automaticamente em
+`src/lib/tracking/meta.ts`, no Pixel e na CAPI, com o mesmo `event_id`. Fora das landings
+(ex.: `/privacidade`) eles não vão.
 
 | Evento | Tipo | Quando dispara | Parâmetros | Frequência | Clarity |
 |---|---|---|---|---|---|
 | `PageView` | padrão | carregamento e troca de rota | — | toda página | — |
 | `ViewContent` | padrão | 15s na página **ou** 50% de rolagem, o que vier primeiro | `content_name`, `value` (preço da oferta da rota: 97, 127...), `currency` | 1x por sessão | — |
 | `CliqueCheckout` | custom | clique em qualquer CTA de compra, antes do redirecionamento | `secao`: `hero`, `funcionalidades`, `demo`, `oferta`, `cta-final`, `barra-mobile` | todo clique | `CliqueCheckout`, `CliqueCheckout_<secao>` e tag `checkout_secao` |
+| `VSL` | custom | VSL do hero chegou a 25%, 50%, 75% ou 95% — só depois do clique em "Clique para ouvir" | `pct`: `25`, `50`, `75`, `95` | 1x por marco a cada reprodução com som | — |
 | `VideoDemo` | custom | primeiro play do vídeo da Demo e ao ativar o som | `acao`: `play` ou `som` | 1x cada por carregamento | — |
 | `Rolagem` | custom | 25%, 50%, 75% e 100% da página | `percent` | 1x por sessão por marco | — |
 | `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `consultor`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
@@ -55,49 +57,64 @@ Notas:
 - "1x por sessão" usa `sessionStorage` (chaves `af_trk:*`). Para repetir um teste,
   abra uma aba nova/anônima.
 
-## Teste A/B de preço (ofertas por URL)
+## Teste A/B: preço × versão (variações por URL)
 
-Cada oferta tem a sua URL, gerada no build. A página, o checkout, o vídeo da Demo, a
-imagem de compartilhamento e o tracking seguem a oferta da URL.
+São 4 variações: **preço** (`p97`, `p127`) × **versão** (`vsl` = VSL vertical no hero,
+`sv` = print do app no lugar do vídeo). Todo o resto da página é igual. Cada variação tem a
+sua URL, gerada estaticamente no build; a página, o checkout, o vídeo da Demo, a imagem de
+compartilhamento e o tracking seguem a variação da URL.
 
-| URL | Oferta | Preço | Checkout (Kiwify) | Uso |
-|---|---|---|---|---|
-| `https://finance.lipealive.com.br/` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | tráfego orgânico, link da bio |
-| `https://finance.lipealive.com.br/97` | `p97` | R$ 97/ano · 12x de R$ 10,03 | `q15UnQk` · `sck=p97` | **conjunto de anúncios A** |
-| `https://finance.lipealive.com.br/127` | `p127` | R$ 127/ano · 12x de R$ 13,14 | `hor8IvC` · `sck=p127` | **conjunto de anúncios B** |
+| URL | Oferta | Versão | Preço | Checkout (Kiwify) | `sck` | Uso |
+|---|---|---|---|---|---|---|
+| `https://finance.lipealive.com.br/` | `p97` | `vsl` | R$ 97 · 12x R$ 10,03 | `q15UnQk` | `p97-vsl` | orgânico, link da bio |
+| `https://finance.lipealive.com.br/97` | `p97` | `vsl` | R$ 97 · 12x R$ 10,03 | `q15UnQk` | `p97-vsl` | anúncios |
+| `https://finance.lipealive.com.br/97-sv` | `p97` | `sv` | R$ 97 · 12x R$ 10,03 | `q15UnQk` | `p97-sv` | anúncios |
+| `https://finance.lipealive.com.br/127` | `p127` | `vsl` | R$ 127 · 12x R$ 13,14 | `hor8IvC` | `p127-vsl` | anúncios |
+| `https://finance.lipealive.com.br/127-sv` | `p127` | `sv` | R$ 127 · 12x R$ 13,14 | `hor8IvC` | `p127-sv` | anúncios |
 
-- Nos anúncios, use sempre `/97` ou `/127` (nunca `/`), com as UTMs de costume
-  (ex.: `https://finance.lipealive.com.br/127?utm_source=meta&utm_campaign=...&utm_content=...`).
-- `/97` e `/127` têm `noindex` e `<link rel="canonical">` para a raiz: não concorrem no Google.
-- Qualquer outro caminho (`/99`, `/p97`) dá 404.
-- Cada rota tem a própria imagem de Open Graph com o preço (`/127/opengraph-image`).
+- Um conjunto de anúncios por variação, cada um com a sua URL (nunca `/`), com as UTMs de
+  costume (ex.: `https://finance.lipealive.com.br/127-sv?utm_source=meta&utm_campaign=...`).
+- Todos os links de checkout mantêm `afid=XH9VD8ii`.
+- Cada rota tem `<link rel="canonical">` para ela mesma e `noindex` (exceto `/`, que é indexável).
+- Qualquer outro caminho (`/99`, `/p97`, `/97-x`) dá 404.
+- Cada rota tem a própria imagem de Open Graph com o preço (`/127-sv/opengraph-image`).
 
-**Como comparar as ofertas**
+**Como comparar as variações**
 
-- **Meta (Gerenciador de Anúncios):** quebre os resultados por conjunto de anúncios, ou
-  crie conversões personalizadas filtrando o parâmetro `oferta` (ex.: `CliqueCheckout`
-  com `oferta = p127`).
-- **Kiwify:** as vendas vêm de produtos diferentes (`q15UnQk` e `hor8IvC`) e com `sck`
-  diferente, então dá pra separar por produto ou por `sck` no relatório de vendas.
-- **Clarity:** cada sessão recebe a tag `oferta` (`p97`/`p127`). Em **Filters → Custom tags
-  → oferta** você assiste só as gravações de uma oferta.
+- **Meta (Gerenciador de Anúncios):** quebre por conjunto de anúncios, ou crie conversões
+  personalizadas filtrando `oferta` e/ou `versao` (ex.: `CliqueCheckout` com `versao = sv`).
+- **Kiwify:** separe por produto (`q15UnQk` × `hor8IvC`, isola o preço) e por `sck`
+  (`p97-vsl`, `p97-sv`, `p127-vsl`, `p127-sv`, isola as 4 variações).
+- **Clarity:** cada sessão recebe as tags `oferta` e `versao`. Em **Filters → Custom tags**
+  você assiste só as gravações de uma variação.
+- **VSL:** o evento `VSL` (`pct` 25/50/75/95) mede retenção do vídeo só nas versões `vsl`.
 
 ### Como adicionar uma oferta
 
 1. Em `src/config/site.ts`, dentro de `site.offers`, copie um bloco (ex.: `p127`) com uma
-   chave nova (ex.: `p147`) e troque: `id`, `slug` (vira a URL, ex.: `"147"` → `/147`),
-   `price`, `anchor`, `installments`, `checkoutUrl` (produto da Kiwify **com** `afid`) e `sck`.
-2. Vídeo da Demo próprio (opcional): `demoVideo` apontando para `public/videos/<pasta>/`.
+   chave nova (ex.: `p147`) e troque: `id`, `slug` (base da URL, ex.: `"147"`), `price`,
+   `anchor`, `installments` e `checkoutUrl` (produto da Kiwify **com** `afid`).
+2. As duas versões são geradas sozinhas: `/147` (com VSL) e `/147-sv` (sem VSL), com
+   `sck` `p147-vsl` e `p147-sv`.
+3. Vídeo da Demo próprio (opcional): `demoVideo` apontando para `public/videos/<pasta>/`.
    Se os arquivos não existirem no build, a página usa o vídeo padrão (p97).
-3. Rode o build: a rota nova aparece como `● /147` na tabela. Nada mais precisa mudar.
-4. Para mudar a oferta da raiz `/`, altere `DEFAULT_OFFER` no `site.ts`.
+4. Rode o build: as rotas novas aparecem como `●` na tabela.
+5. Para mudar o que a raiz `/` mostra, altere `DEFAULT_OFFER` / `DEFAULT_VERSAO`.
+
+### VSL do hero
+
+Configurada em `site.vsl`. `provider: "native"` usa `public/videos/vsl-lipe.mp4` (autoplay
+mudo em loop; no clique volta ao início com som e controles). Para trocar pelo VTurb,
+preencha `site.vturb.accountId` e `site.vsl.vturbId` e mude `provider` para `"vturb"`.
+O evento `VSL` só existe no player nativo; no VTurb, use as métricas do próprio VTurb.
 
 As rotas são estáticas: qualquer mudança em ofertas ou vídeos só vale depois de um novo deploy.
 
 ## Link da Kiwify
 
 O `CheckoutButton` usa o link da oferta da rota (`checkoutUrl`, com `afid`), acrescenta
-`sck=<id da oferta>` e repassa da URL atual: `utm_*`, `fbclid` e `src`.
+`sck=<oferta>-<versao>` (ex.: `p97-vsl`, `p127-sv`) e repassa da URL atual: `utm_*`,
+`fbclid` e `src`.
 
 ## API de Conversões (`POST /api/meta`)
 
@@ -136,7 +153,7 @@ seus `eventID`.
    `clarity.ms/tag/<id>` com status 200 e chamadas `collect`.
 2. No painel do Clarity, **Recordings** leva alguns minutos (até ~30 min no primeiro uso)
    para listar a sessão. **Dashboard → Live** mostra visitantes em tempo real.
-3. Para separar o teste A/B: **Filters → Custom tags → `oferta`** (`p97` ou `p127`).
+3. Para separar o teste A/B: **Filters → Custom tags → `oferta`** (`p97`/`p127`) e **`versao`** (`vsl`/`sv`).
 4. Para filtrar gravações: **Filters → Custom events** e escolha `ViuOferta`,
    `CliqueCheckout`, `CliqueCheckout_<secao>` ou `SecaoVista_<secao>`. Em
    **Custom tags**, `checkout_secao` mostra de onde veio o clique.
@@ -146,7 +163,8 @@ seus `eventID`.
 ## Onde está o código
 
 - `src/lib/tracking/` — config (inclui a oferta atual), tipos de evento, Pixel (`meta.ts`, anexa `oferta`), Clarity, "uma vez por sessão" e as funções de alto nível (`index.ts`).
-- `src/components/offer-context.tsx` — oferta da rota para as seções; informa a oferta ao tracking e ao Clarity.
+- `src/components/offer-context.tsx` — variação da rota (oferta + versão) para as seções; informa ao tracking e ao Clarity.
+- `src/components/vsl-player.tsx` — VSL do hero (nativo/VTurb) e o evento `VSL`.
 - `src/components/tracking/tracking-scripts.tsx` — scripts de terceiros via `next/script`.
 - `src/components/tracking/page-tracker.tsx` — PageView, ViewContent, Rolagem, SecaoVista.
 - `src/app/api/meta/route.ts` — API de Conversões.

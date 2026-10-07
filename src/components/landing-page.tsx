@@ -15,11 +15,11 @@ import { Oferta } from "@/components/sections/oferta";
 import { Faq } from "@/components/sections/faq";
 import { CtaFinal } from "@/components/sections/cta-final";
 import { resolvePageOffer } from "@/config/offer-page";
-import type { OfferId } from "@/config/site";
+import type { OfferId, Versao } from "@/config/site";
 
-/** A landing inteira para uma oferta. Usada por "/" e por "/[oferta]". */
-export function LandingPage({ offerId }: { offerId: OfferId }) {
-  const offer = resolvePageOffer(offerId);
+/** A landing inteira para uma variação (oferta × versão). Usada por "/" e por "/[oferta]". */
+export function LandingPage({ offerId, versao }: { offerId: OfferId; versao: Versao }) {
+  const offer = resolvePageOffer(offerId, versao);
 
   return (
     <OfferProvider offer={offer}>

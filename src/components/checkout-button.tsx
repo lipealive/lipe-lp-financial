@@ -4,7 +4,7 @@ import { useSyncExternalStore, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { Offer } from "@/config/site";
+import type { PageOffer } from "@/config/site";
 import { useOffer } from "@/components/offer-context";
 import { cliqueCheckout, type CheckoutOrigem } from "@/lib/tracking";
 
@@ -40,9 +40,10 @@ const PASSTHROUGH = new Set(["fbclid", "src"]);
  * Monta o link da Kiwify da oferta da rota (mantendo o afid), acrescenta o sck e repassa
  * utm_*, fbclid e src da URL atual.
  */
-function buildCheckoutUrl(offer: Offer, search: string): string {
+function buildCheckoutUrl(offer: PageOffer, search: string): string {
   const url = new URL(offer.checkoutUrl);
-  url.searchParams.set("sck", offer.sck);
+  // sck = oferta-versão (ex.: p97-vsl, p127-sv): separa as 4 variações nas vendas da Kiwify.
+  url.searchParams.set("sck", offer.checkoutSck);
   const current = new URLSearchParams(search);
   current.forEach((value, key) => {
     const k = key.toLowerCase();

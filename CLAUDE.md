@@ -9,7 +9,7 @@
 - Nome do produto vem SEMPRE de `site.productName` (e `site.company` para a MultiCap). Kit de marca em `public/images/brand/alive-finance-brand/` (ler o LEIAME). Regra do ponto: verde no claro, magenta (#E6338A) no escuro, via token `--dot`.
 - As 13 aulas da Escola NÃO são do Lipe: dizer "13 aulas de educação financeira".
 - Objetivo da página: converter tráfego de **Meta Ads (Instagram, celular)** em compras.
-- Checkout: **Kiwify**. Vídeos (VSL e demo): **VTurb**. Tracking: Meta Pixel + Conversions API (CAPI).
+- Checkout: **Kiwify**. Vídeos: VSL do hero em `<video>` próprio (`site.vsl`, VTurb pronto mas desligado) e Demo em `<video>` próprio. Tracking: Meta Pixel + Conversions API (CAPI) e Clarity.
 - Stack: Next.js 16 (App Router, `src/`), Tailwind v4, shadcn/ui (radix, base neutral), registry `@bklit`, `motion` (`import ... from "motion/react"`), `lucide-react`.
 - Fonte: Plus Jakarta Sans (next/font, pesos 400–800) exposta como `--font-plus-jakarta` → `font-sans`.
 
@@ -18,11 +18,12 @@
 2. **Animações leves** e sempre respeitando `prefers-reduced-motion`. Use os wrappers de `src/components/motion/` (`FadeIn`, `Stagger`/`StaggerItem`) em vez de instanciar `motion.*` solto nas seções. Nada de animações pesadas em scroll/parallax.
 3. **Todas as imagens via `next/image`.** Screenshots do app ficam em `public/images/app/{light,dark}/` (visao-geral, reserva, orcamento, mobile .png); fotos do Lipe em `public/images/lipe/`; logo em `public/images/brand/`.
 4. **Nenhum texto de oferta fora de `src/config/site.ts`**: preço, parcelas, link do checkout Kiwify, IDs do VTurb, WhatsApp de suporte. Nunca hardcode.
-5. **Teste A/B por URL.** As ofertas ficam em `site.offers` (`p97`, `p127`). Cada uma vira uma rota estática `/<slug>` (`src/app/[oferta]/page.tsx`, `dynamicParams = false`); a raiz `/` usa `DEFAULT_OFFER` (p97). A página inteira é `src/components/landing-page.tsx`, que recebe o `offerId`.
-   - **Componentes client leem a oferta com `useOffer()`** (`src/components/offer-context.tsx`); componentes server recebem `offer` por prop. Não existe mais oferta global.
-   - Vídeo da Demo por oferta via `demoVideo` (fallback no vídeo padrão se o arquivo não existir no build, ver `src/config/offer-page.ts`).
-   - Todos os eventos do pixel levam `oferta`; o Clarity recebe a tag `oferta`. `/97` e `/127` têm `noindex` e canonical para `/`.
-   - URLs dos anúncios: conjunto A → `/97`, conjunto B → `/127`; `/` é orgânico/bio. Como adicionar uma oferta: ver `TRACKING.md`.
+5. **Teste A/B por URL: preço × versão.** Ofertas em `site.offers` (`p97`, `p127`) × versões `Versao` (`"vsl"` = VSL vertical no hero, `"sv"` = print do app no lugar do vídeo). Rotas estáticas via `src/app/[oferta]/page.tsx` (`VARIANTS`, `dynamicParams = false`): `/97`, `/127` (vsl), `/97-sv`, `/127-sv` (sv). A raiz `/` = `DEFAULT_OFFER` + `DEFAULT_VERSAO` (p97 + vsl). A página inteira é `src/components/landing-page.tsx` (`offerId` + `versao`).
+   - **Componentes client leem a variação com `useOffer()`** (traz `versao`, `path` e `checkoutSck`); componentes server recebem `offer` por prop. Não existe oferta global.
+   - Só o hero muda entre versões; o resto da página é igual. VSL em `site.vsl` (`provider` `"native"` | `"vturb"`), componente `src/components/vsl-player.tsx`.
+   - Todos os eventos do pixel levam `oferta` e `versao`; o Clarity recebe as tags `oferta` e `versao`. Checkout com `sck=<oferta>-<versao>` e `afid`.
+   - Canonical de cada rota aponta para ela mesma; `/97`, `/127`, `/97-sv`, `/127-sv` têm `noindex`.
+   - URLs dos anúncios, como comparar e como adicionar uma oferta: ver `TRACKING.md`.
 6. **Tema por tokens** em `src/app/globals.css`. Página clara por padrão; seções escuras de contraste envolvidas por `.section-dark` (troca os tokens e ativa `dark:`). Use classes semânticas (`bg-background`, `bg-card`, `text-muted-foreground`, `bg-primary`, `bg-gold`, `bg-brand-gradient`, `text-brand-gradient`); nunca hex solto em componentes.
 7. Radius: cards 16px (`rounded-lg` = `--radius`), botões/pills 999px (`rounded-full`). Os componentes shadcn já vêm ajustados.
 8. Variáveis de ambiente em `.env.example` (`META_PIXEL_ID`, `META_CAPI_TOKEN`, `META_TEST_EVENT_CODE`, `CLARITY_ID`). Nenhuma usa `NEXT_PUBLIC_`: os IDs são lidos no layout (servidor) e passados por props. Vazias = tracking desligado, sem erro. A página nunca dispara InitiateCheckout nem Purchase (vêm da Kiwify). Token da CAPI só em server (route handler).

@@ -1,14 +1,14 @@
 import { site } from "@/config/site";
 import { getTrackingOffer } from "./config";
 import { clarityEvent, claritySet } from "./clarity";
-import type { CheckoutOrigem, ScrollPercent, Secao } from "./events";
+import type { CheckoutOrigem, ScrollPercent, Secao, VslPercent } from "./events";
 import { trackCustom, trackPageView, trackViewContent } from "./meta";
 import { oncePerSession } from "./session";
 
 export { trackCustom, trackPageView, trackViewContent } from "./meta";
 export { clarityEvent } from "./clarity";
-export { SECTIONS, SCROLL_STEPS } from "./events";
-export type { CheckoutOrigem, Secao, ScrollPercent } from "./events";
+export { SECTIONS, SCROLL_STEPS, VSL_STEPS } from "./events";
+export type { CheckoutOrigem, Secao, ScrollPercent, VslPercent } from "./events";
 
 /** PageView (todo carregamento / troca de rota). */
 export function pageView() {
@@ -39,6 +39,11 @@ export function cliqueCheckout(secao: CheckoutOrigem) {
 /** Vídeo da Demo: primeiro play e ativação do som. */
 export function videoDemo(acao: "play" | "som") {
   trackCustom("VideoDemo", { acao });
+}
+
+/** Progresso da VSL (25/50/75/95), depois que a pessoa ativou o som. Controle de "uma vez" fica no player. */
+export function vslProgress(pct: VslPercent) {
+  trackCustom("VSL", { pct });
 }
 
 /** Profundidade de rolagem: uma vez por sessão em cada marco. */

@@ -236,10 +236,22 @@ export const site = {
      * https://scripts.converteai.net/<accountId>/players/<playerId>/v4/player.js
      */
     accountId: "",
-    /** ID do player da VSL principal (vazio = placeholder "VSL em breve"). */
-    vslId: "",
-    /** Proporção da VSL: "16:9" (horizontal) ou "9:16" (vertical). */
-    vslAspect: "16:9" as VideoAspect,
+  },
+
+  /**
+   * VSL do hero (versão "vsl"). Vertical 9:16.
+   * provider "native": <video> próprio (src/poster abaixo).
+   * provider "vturb": embed oficial do VTurb com `vturbId` (+ vturb.accountId). Pronto, mas desligado.
+   */
+  vsl: {
+    provider: "native" as "native" | "vturb",
+    vturbId: "",
+    src: "/videos/vsl-lipe.mp4",
+    poster: "/videos/vsl-lipe-poster.jpg",
+    aspect: "9:16" as VideoAspect,
+    width: 720,
+    height: 1280,
+    soundLabel: "Clique para ouvir",
   },
 
   support: {
@@ -251,6 +263,13 @@ export const site = {
 } as const;
 
 export type OfferId = keyof typeof site.offers;
+
+/** Versão da página: com VSL no hero ("vsl") ou sem VSL ("sv"). */
+export type Versao = "vsl" | "sv";
+export const VERSOES: readonly Versao[] = ["vsl", "sv"];
+
+/** Versão da raiz "/". */
+export const DEFAULT_VERSAO: Versao = "vsl";
 
 /** Oferta da raiz "/" (tráfego orgânico e link da bio). */
 export const DEFAULT_OFFER: OfferId = "p97";
@@ -276,8 +295,13 @@ export type Offer = {
   payment: readonly string[];
 };
 
-/** Oferta pronta pra página: com o vídeo da Demo já resolvido (ver src/config/offer-page.ts). */
+/** Oferta pronta pra página: versão + vídeo da Demo já resolvido (ver src/config/offer-page.ts). */
 export type PageOffer = Offer & {
+  versao: Versao;
+  /** Caminho da rota desta variação ("/", "/97", "/127-sv"...). */
+  path: string;
+  /** sck enviado à Kiwify: `${oferta}-${versao}` (ex.: p97-vsl). */
+  checkoutSck: string;
   video: { src: string; poster: string; width: number; height: number };
 };
 
@@ -285,9 +309,19 @@ export function getOffer(id: OfferId): Offer {
   return { ...site.offers[id], ...site.offerContent } as Offer;
 }
 
-/** "97" → "p97". Undefined se o slug não existir. */
-export function offerIdFromSlug(slug: string): OfferId | undefined {
-  return OFFER_IDS.find((id) => site.offers[id].slug === slug);
+/** Slug da rota de uma variação: "97" (vsl) ou "97-sv" (sem VSL). */
+export function variantSlug(id: OfferId, versao: Versao) {
+  return versao === "sv" ? `${site.offers[id].slug}-sv` : site.offers[id].slug;
+}
+
+/** Todas as variações publicadas (oferta × versão): /97, /127, /97-sv, /127-sv. */
+export const VARIANTS = OFFER_IDS.flatMap((offerId) =>
+  VERSOES.map((versao) => ({ offerId, versao, slug: variantSlug(offerId, versao) })),
+);
+
+/** "127-sv" → { offerId: "p127", versao: "sv" }. Undefined se não existir. */
+export function variantFromSlug(slug: string) {
+  return VARIANTS.find((v) => v.slug === slug);
 }
 
 export type Site = typeof site;

@@ -33,8 +33,8 @@ export function clarityEnabled() {
   return config.clarity;
 }
 
-/** Oferta da página atual (vem do OfferProvider). Null fora da landing. */
-export type TrackingOffer = { id: string; price: number; currency: string };
+/** Oferta e versão da página atual (vêm do OfferProvider). Null fora da landing. */
+export type TrackingOffer = { id: string; price: number; currency: string; versao: string };
 
 let currentOffer: TrackingOffer | null = null;
 
