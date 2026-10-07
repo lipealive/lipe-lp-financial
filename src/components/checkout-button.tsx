@@ -4,7 +4,7 @@ import { useSyncExternalStore, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { site } from "@/config/site";
+import { offer } from "@/config/site";
 import { cliqueCheckout, type CheckoutOrigem } from "@/lib/tracking";
 
 type CheckoutButtonProps = {
@@ -40,7 +40,8 @@ const PASSTHROUGH = new Set(["fbclid", "src"]);
  * utm_*, fbclid e src da URL atual.
  */
 function buildCheckoutUrl(search: string): string {
-  const url = new URL(site.offer.checkoutUrl);
+  const url = new URL(offer.checkoutUrl);
+  url.searchParams.set("sck", offer.sck);
   const current = new URLSearchParams(search);
   current.forEach((value, key) => {
     const k = key.toLowerCase();
@@ -81,7 +82,7 @@ export function CheckoutButton({
   className,
 }: CheckoutButtonProps) {
   const search = useSearch();
-  const href = search ? buildCheckoutUrl(search) : site.offer.checkoutUrl;
+  const href = buildCheckoutUrl(search);
   const reduceMotion = useReducedMotion();
 
   function handleClick() {

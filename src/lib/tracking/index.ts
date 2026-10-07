@@ -1,4 +1,4 @@
-import { site } from "@/config/site";
+import { offer, site } from "@/config/site";
 import { clarityEvent, claritySet } from "./clarity";
 import type { CheckoutOrigem, ScrollPercent, Secao } from "./events";
 import { trackCustom, trackPageView, trackViewContent } from "./meta";
@@ -19,14 +19,15 @@ export function viewContentOnce() {
   if (!oncePerSession("ViewContent")) return;
   trackViewContent({
     content_name: site.productName,
-    value: site.offer.price,
-    currency: site.offer.currency,
+    value: offer.price,
+    currency: offer.currency,
+    oferta: offer.id,
   });
 }
 
 /** Clique num CTA de compra, com a seção de origem. Dispara em todo clique. */
 export function cliqueCheckout(secao: CheckoutOrigem) {
-  trackCustom("CliqueCheckout", { secao });
+  trackCustom("CliqueCheckout", { secao, oferta: offer.id });
   claritySet("checkout_secao", secao);
   clarityEvent("CliqueCheckout");
   clarityEvent(`CliqueCheckout_${secao}`);

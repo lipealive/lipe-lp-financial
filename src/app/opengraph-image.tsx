@@ -1,9 +1,9 @@
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { site } from "@/config/site";
+import { offer, site } from "@/config/site";
 
-export const alt = `${site.productName} — Organize seu dinheiro por ${site.offer.anchor}`;
+export const alt = `${site.productName} — Organize seu dinheiro por ${offer.anchor}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -59,7 +59,7 @@ export default async function Image() {
             display: "flex",
           }}
         >
-          Organize seu dinheiro por&nbsp;<span style={{ color: "#23B585" }}>{site.offer.anchor}</span>
+          Organize seu dinheiro por&nbsp;<span style={{ color: "#23B585" }}>{offer.anchor}</span>
         </div>
         <div
           style={{

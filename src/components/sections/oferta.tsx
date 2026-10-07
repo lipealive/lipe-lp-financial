@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { useInView } from "motion/react";
 import { Barcode, Check, CreditCard, QrCode, Zap, type LucideIcon } from "lucide-react";
-import { site } from "@/config/site";
+import { formatPrice, offer, site } from "@/config/site";
 import { CountUp, FadeIn, Stagger, StaggerItem } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 import { AvailabilityStrip } from "@/components/availability-strip";
@@ -31,7 +31,7 @@ export function Oferta() {
         <FadeIn className="flex flex-col items-center gap-3">
           <span className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Acesso completo</span>
           <h2 className="max-w-[18ch] text-[2rem] leading-[1.08] font-extrabold tracking-[-0.03em] text-balance sm:text-4xl lg:text-5xl">
-            Tudo isso por <span className="text-primary">{site.offer.anchor}</span>.
+            Tudo isso por <span className="text-primary">{offer.anchor}</span>.
           </h2>
         </FadeIn>
 
@@ -44,7 +44,7 @@ export function Oferta() {
                   <span className="mt-2 text-2xl text-primary sm:mt-3 sm:text-3xl">R$</span>
                   <span className="text-[4.5rem] text-foreground tabular-nums sm:text-[5.5rem]">
                     <CountUp
-                      value={site.offer.price}
+                      value={offer.price}
                       active={priceInView}
                       duration={1.4}
                       format={(v) => fmt.format(v)}
@@ -52,15 +52,15 @@ export function Oferta() {
                   </span>
                 </span>
                 <span className="mt-3 text-sm font-semibold text-foreground sm:text-[15px]">
-                  por {site.offer.period} · {site.offer.anchor}
+                  por {offer.period} · {offer.anchor}
                 </span>
                 <span className="mt-1 text-sm text-muted-foreground sm:text-[15px]">
-                  {site.offer.paymentLabel} · {site.offer.accessLabel}
+                  ou {offer.installments.count}x de {formatPrice(offer.installments.value)} · {offer.accessLabel}
                 </span>
               </div>
 
               <Stagger stagger={0.05} amount={0.2} className="mt-7 flex flex-col gap-2.5 text-left">
-                {site.offer.includes.map((item) => (
+                {offer.includes.map((item) => (
                   <StaggerItem key={item} distance={10} className="flex items-start gap-2.5 text-[15px] sm:text-base">
                     <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/15 text-primary">
                       <Check className="size-3" strokeWidth={3} aria-hidden />
@@ -78,7 +78,7 @@ export function Oferta() {
 
               <div className="mt-5 flex flex-col items-center gap-2.5">
                 <ul className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
-                  {site.offer.payment.map((p) => {
+                  {offer.payment.map((p) => {
                     const Icon = paymentIcons[p] ?? CreditCard;
                     return (
                       <li key={p} className="flex items-center gap-1.5">

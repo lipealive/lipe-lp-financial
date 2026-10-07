@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { site, formatPrice } from "@/config/site";
+import { formatPrice, offer } from "@/config/site";
 import { CheckoutButton } from "@/components/checkout-button";
 
 /**
@@ -27,9 +27,11 @@ export function MobileCtaBar() {
         >
           <div className="flex h-16 items-center justify-between gap-3 px-4">
             <div className="flex flex-col leading-tight">
-              <span className="text-[11px] font-medium text-muted-foreground">ou parcelado no cartão</span>
               <span className="text-lg font-extrabold tracking-tight text-primary tabular-nums">
-                {formatPrice(site.offer.price)}/{site.offer.period}
+                {offer.installments.count}x de {formatPrice(offer.installments.value)}
+              </span>
+              <span className="text-[11px] font-medium text-muted-foreground">
+                ou {formatPrice(offer.price)}/{offer.period}
               </span>
             </div>
             <CheckoutButton size="compact" location="barra-mobile" className="h-11 px-5">

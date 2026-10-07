@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { site } from "@/config/site";
+import { offer, site } from "@/config/site";
 import { FadeIn } from "@/components/motion";
 import { CheckoutButton } from "@/components/checkout-button";
 
@@ -28,7 +28,7 @@ export function CtaFinal() {
             Seu dinheiro não vai se organizar sozinho.
           </h2>
           <p className="mt-4 text-base text-muted-foreground sm:text-lg">
-            Comece hoje por <span className="font-semibold text-primary">{site.offer.anchor}</span>.
+            Comece hoje por <span className="font-semibold text-primary">{offer.anchor}</span>.
           </p>
           <div className="mt-8 w-full sm:w-auto">
             <CheckoutButton location="cta-final">Quero organizar minhas finanças</CheckoutButton>

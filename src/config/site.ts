@@ -61,19 +61,36 @@ export const site = {
     signature: "Stay Alive",
   },
 
-  offer: {
-    /** Preço por ano (BRL). */
-    price: 97,
-    /** Período coberto pelo preço. */
-    period: "ano",
-    currency: "BRL",
-    /** Âncora de preço usada na copy (título da oferta, CTA final, OG). */
-    anchor: "menos de R$ 8,10 por mês",
-    /** Condição de pagamento, sem valor de parcela. */
-    paymentLabel: "à vista ou parcelado no cartão",
-    /** Duração do acesso, como aparece na oferta. */
-    accessLabel: "acesso por 1 ano",
-    /** O que está incluso (card de preço). */
+  /**
+   * Ofertas disponíveis. A página usa a oferta ativa (ACTIVE_OFFER → `offer`).
+   * Para trocar de oferta, adicione uma chave aqui e mude ACTIVE_OFFER.
+   */
+  offers: {
+    p97: {
+      id: "p97",
+      /** Preço por ano (BRL). */
+      price: 97,
+      /** Período coberto pelo preço. */
+      period: "ano",
+      currency: "BRL",
+      /** Âncora de preço usada na copy (título da oferta, CTA final, OG). */
+      anchor: "menos de R$ 8,10 por mês",
+      /** Parcelamento no cartão (valor confirmado no checkout da Kiwify). */
+      installments: { count: 12, value: 10.03 },
+      /** Duração do acesso, como aparece na oferta. */
+      accessLabel: "acesso por 1 ano",
+      /** Order bump de acesso vitalício, oferecido no checkout (BRL). */
+      lifetimeAddon: 40,
+      /** Link do checkout Kiwify (com afid do afiliado). */
+      checkoutUrl: "https://pay.kiwify.com.br/q15UnQk?afid=XH9VD8ii",
+      /** Parâmetro sck da Kiwify (rastreio de origem). */
+      sck: "p97",
+    },
+  },
+
+  /** Conteúdo comum a todas as ofertas (card de preço). */
+  offerContent: {
+    /** O que está incluso. */
     includes: [
       "Consultor com IA no WhatsApp",
       "Orçamento completo",
@@ -89,7 +106,6 @@ export const site = {
     ],
     /** Formas de pagamento exibidas abaixo do botão. */
     payment: ["Cartão", "Pix", "Boleto"],
-    checkoutUrl: "https://pay.kiwify.com.br/aZ9JtZL?afid=XH9VD8ii",
   },
 
   /** Seção "Consultor no WhatsApp" */
@@ -185,8 +201,9 @@ export const site = {
     },
     { q: "Preciso saber Excel?", a: "Não. Tudo é calculado automaticamente." },
     { q: "Por quanto tempo tenho acesso?", a: "1 ano de acesso." },
+    { q: "Dá pra ter acesso vitalício?", a: "Sim. No checkout você pode adicionar a versão vitalícia por mais R$ 40." },
     { q: "Preciso conectar minha conta do banco?", a: "Não. Você lança seus gastos no app, pelo WhatsApp com o Consultor ou importando o extrato." },
-    { q: "Quais as formas de pagamento?", a: "Cartão de crédito (à vista ou parcelado), Pix e boleto." },
+    { q: "Quais as formas de pagamento?", a: "Cartão em até 12x, Pix e boleto." },
     { q: "E se eu tiver dúvida?", a: "Nosso suporte responde pelo WhatsApp:", cta: "whatsapp" as const },
   ],
 
@@ -210,9 +227,18 @@ export const site = {
   },
 } as const;
 
+export type OfferId = keyof typeof site.offers;
+
+/** Oferta ativa na página. Só existe p97 por enquanto. */
+export const ACTIVE_OFFER: OfferId = "p97";
+
+/** Atalho: a oferta ativa + conteúdo comum. É o que as seções usam. */
+export const offer = { ...site.offers[ACTIVE_OFFER], ...site.offerContent };
+export type Offer = typeof offer;
+
 export type Site = typeof site;
 
-export function formatPrice(value: number, currency: string = site.offer.currency) {
+export function formatPrice(value: number, currency: string = offer.currency) {
   return new Intl.NumberFormat(site.locale, {
     style: "currency",
     currency,

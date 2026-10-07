@@ -31,8 +31,8 @@ no Pixel (browser) e na CAPI (servidor), e o Meta deduplica os dois.
 | Evento | Tipo | Quando dispara | Parâmetros | Frequência | Clarity |
 |---|---|---|---|---|---|
 | `PageView` | padrão | carregamento e troca de rota | — | toda página | — |
-| `ViewContent` | padrão | 15s na página **ou** 50% de rolagem, o que vier primeiro | `content_name`, `value`, `currency` (do `site.ts`) | 1x por sessão | — |
-| `CliqueCheckout` | custom | clique em qualquer CTA de compra, antes do redirecionamento | `secao`: `hero`, `funcionalidades`, `demo`, `oferta`, `cta-final`, `barra-mobile` | todo clique | `CliqueCheckout`, `CliqueCheckout_<secao>` e tag `checkout_secao` |
+| `ViewContent` | padrão | 15s na página **ou** 50% de rolagem, o que vier primeiro | `content_name`, `value`, `currency`, `oferta` (id da oferta ativa, ex.: `p97`) | 1x por sessão | — |
+| `CliqueCheckout` | custom | clique em qualquer CTA de compra, antes do redirecionamento | `secao`: `hero`, `funcionalidades`, `demo`, `oferta`, `cta-final`, `barra-mobile`; `oferta`: id da oferta ativa | todo clique | `CliqueCheckout`, `CliqueCheckout_<secao>` e tag `checkout_secao` |
 | `VideoDemo` | custom | primeiro play do vídeo da Demo e ao ativar o som | `acao`: `play` ou `som` | 1x cada por carregamento | — |
 | `Rolagem` | custom | 25%, 50%, 75% e 100% da página | `percent` | 1x por sessão por marco | — |
 | `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `consultor`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
@@ -53,7 +53,7 @@ Notas:
 
 ## Link da Kiwify
 
-O `CheckoutButton` mantém o `afid` do link e repassa da URL atual: `utm_*`, `fbclid` e `src`.
+O `CheckoutButton` usa o link da oferta ativa (`offer.checkoutUrl`, com `afid`), acrescenta `sck=<id da oferta>` e repassa da URL atual: `utm_*`, `fbclid` e `src`.
 
 ## API de Conversões (`POST /api/meta`)
 

@@ -85,7 +85,7 @@ export function trackPageView() {
 }
 
 /** Evento padrão: fbq('track', 'ViewContent', {...}). */
-export function trackViewContent(params: { content_name: string; value: number; currency: string }) {
+export function trackViewContent(params: { content_name: string; value: number; currency: string; oferta: string }) {
   send("track", "ViewContent", params);
 }
 
