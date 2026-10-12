@@ -91,6 +91,23 @@ export const site = {
       /** Parâmetro sck da Kiwify (rastreio de origem). */
       sck: "p97",
     },
+    p67: {
+      id: "p67",
+      slug: "67",
+      price: 67,
+      period: "ano",
+      currency: "BRL",
+      /** 67 / 12 = 5,58 */
+      anchor: "menos de R$ 5,60 por mês",
+      /** Valor lido no checkout da Kiwify (aZ9JtZL) em 2026-10-12. */
+      installments: { count: 12, value: 6.93 },
+      accessLabel: "acesso por 1 ano",
+      lifetimeAddon: 40,
+      checkoutUrl: "https://pay.kiwify.com.br/aZ9JtZL?afid=XH9VD8ii",
+      sck: "p67",
+      /** Só a versão sem VSL: gera apenas /67-sv. */
+      versoes: ["sv"],
+    },
     p127: {
       id: "p127",
       slug: "127",
@@ -291,6 +308,8 @@ export type Offer = {
   checkoutUrl: string;
   sck: string;
   demoVideo?: { src: string; poster: string };
+  /** Versões publicadas desta oferta. Padrão: todas (vsl e sv). */
+  versoes?: readonly Versao[];
   includes: readonly string[];
   payment: readonly string[];
 };
@@ -314,9 +333,9 @@ export function variantSlug(id: OfferId, versao: Versao) {
   return versao === "sv" ? `${site.offers[id].slug}-sv` : site.offers[id].slug;
 }
 
-/** Todas as variações publicadas (oferta × versão): /97, /127, /97-sv, /127-sv. */
+/** Variações publicadas (oferta × versões da oferta): /97, /97-sv, /127, /127-sv, /67-sv. */
 export const VARIANTS = OFFER_IDS.flatMap((offerId) =>
-  VERSOES.map((versao) => ({ offerId, versao, slug: variantSlug(offerId, versao) })),
+  (getOffer(offerId).versoes ?? VERSOES).map((versao) => ({ offerId, versao, slug: variantSlug(offerId, versao) })),
 );
 
 /** "127-sv" → { offerId: "p127", versao: "sv" }. Undefined se não existir. */

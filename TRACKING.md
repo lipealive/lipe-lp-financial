@@ -71,6 +71,7 @@ compartilhamento e o tracking seguem a variação da URL.
 | `https://finance.lipealive.com.br/97-sv` | `p97` | `sv` | R$ 97 · 12x R$ 10,03 | `q15UnQk` | `p97-sv` | anúncios |
 | `https://finance.lipealive.com.br/127` | `p127` | `vsl` | R$ 127 · 12x R$ 13,14 | `hor8IvC` | `p127-vsl` | anúncios |
 | `https://finance.lipealive.com.br/127-sv` | `p127` | `sv` | R$ 127 · 12x R$ 13,14 | `hor8IvC` | `p127-sv` | anúncios |
+| `https://finance.lipealive.com.br/67-sv` | `p67` | `sv` | R$ 67 · 12x R$ 6,93 | `aZ9JtZL` | `p67-sv` | anúncios (só sem VSL) |
 
 - Um conjunto de anúncios por variação, cada um com a sua URL (nunca `/`), com as UTMs de
   costume (ex.: `https://finance.lipealive.com.br/127-sv?utm_source=meta&utm_campaign=...`).
@@ -94,7 +95,7 @@ compartilhamento e o tracking seguem a variação da URL.
 1. Em `src/config/site.ts`, dentro de `site.offers`, copie um bloco (ex.: `p127`) com uma
    chave nova (ex.: `p147`) e troque: `id`, `slug` (base da URL, ex.: `"147"`), `price`,
    `anchor`, `installments` e `checkoutUrl` (produto da Kiwify **com** `afid`).
-2. As duas versões são geradas sozinhas: `/147` (com VSL) e `/147-sv` (sem VSL), com
+2. As duas versões são geradas sozinhas (ou só as listadas em `versoes`, ex.: `["sv"]` na p67): `/147` (com VSL) e `/147-sv` (sem VSL), com
    `sck` `p147-vsl` e `p147-sv`.
 3. Vídeo da Demo próprio (opcional): `demoVideo` apontando para `public/videos/<pasta>/`.
    Se os arquivos não existirem no build, a página usa o vídeo padrão (p97).
