@@ -108,6 +108,38 @@ export const site = {
       /** Só a versão sem VSL: gera apenas /67-sv. */
       versoes: ["sv"],
     },
+    p77: {
+      id: "p77",
+      slug: "77",
+      price: 77,
+      period: "ano",
+      currency: "BRL",
+      anchor: "menos de R$ 6,50 por mês",
+      /** Valor conferido no checkout da Kiwify (buNzps1) em 2026-10-13. */
+      installments: { count: 12, value: 7.96 },
+      accessLabel: "acesso por 1 ano",
+      lifetimeAddon: 40,
+      checkoutUrl: "https://pay.kiwify.com.br/buNzps1?afid=XH9VD8ii",
+      sck: "p77",
+      /** Só a versão sem VSL. */
+      versoes: ["sv"],
+    },
+    p107: {
+      id: "p107",
+      slug: "107",
+      price: 107,
+      period: "ano",
+      currency: "BRL",
+      anchor: "menos de R$ 9 por mês",
+      /** Valor conferido no checkout da Kiwify (AUEMyFu) em 2026-10-13. */
+      installments: { count: 12, value: 11.07 },
+      accessLabel: "acesso por 1 ano",
+      lifetimeAddon: 40,
+      checkoutUrl: "https://pay.kiwify.com.br/AUEMyFu?afid=XH9VD8ii",
+      sck: "p107",
+      /** Só a versão sem VSL. */
+      versoes: ["sv"],
+    },
     p127: {
       id: "p127",
       slug: "127",
