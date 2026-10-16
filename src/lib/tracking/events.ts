@@ -3,6 +3,7 @@ export const SECTIONS = [
   "hero",
   "vitrine",
   "consultor",
+  "acesso",
   "funcionalidades",
   "demo",
   "lipe",

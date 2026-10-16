@@ -5,7 +5,8 @@ import { OfferProvider } from "@/components/offer-context";
 import { SectionDivider } from "@/components/section-divider";
 import { Hero } from "@/components/sections/hero";
 import { Vitrine } from "@/components/sections/vitrine";
-import { Consultor } from "@/components/sections/consultor";
+import { Consultor, ConsultorPerguntas } from "@/components/sections/consultor";
+import { Acesso } from "@/components/sections/acesso";
 import { Funcionalidades } from "@/components/sections/funcionalidades";
 import { Demo } from "@/components/sections/demo";
 import { MarqueeBand } from "@/components/sections/marquee-band";
@@ -30,6 +31,8 @@ export function LandingPage({ offerId, versao }: { offerId: OfferId; versao: Ver
         <Vitrine />
         <SectionDivider />
         <Consultor />
+        <Acesso />
+        <ConsultorPerguntas />
         <SectionDivider />
         <Funcionalidades />
         <Demo />

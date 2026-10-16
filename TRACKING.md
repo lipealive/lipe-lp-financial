@@ -41,7 +41,7 @@ no Pixel (browser) e na CAPI (servidor), e o Meta deduplica os dois.
 | `VSL` | custom | VSL do hero chegou a 25%, 50%, 75% ou 95% — só depois do clique em "Clique para ouvir" | `pct`: `25`, `50`, `75`, `95` | 1x por marco a cada reprodução com som | — |
 | `VideoDemo` | custom | primeiro play do vídeo da Demo e ao ativar o som | `acao`: `play` ou `som` | 1x cada por carregamento | — |
 | `Rolagem` | custom | 25%, 50%, 75% e 100% da página | `percent` | 1x por sessão por marco | — |
-| `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `consultor`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
+| `SecaoVista` | custom | seção ≥50% visível por 1s | `secao`: `hero`, `vitrine`, `consultor`, `acesso`, `funcionalidades`, `demo`, `lipe`, `comparativo`, `oferta`, `faq`, `cta-final` | 1x por sessão por seção | `SecaoVista_<secao>` |
 | `ViuOferta` | custom | junto com `SecaoVista` da seção `oferta` | — | 1x por sessão | `ViuOferta` |
 
 Notas:

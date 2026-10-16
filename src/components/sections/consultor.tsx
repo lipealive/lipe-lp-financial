@@ -63,6 +63,17 @@ export function Consultor() {
         </div>
       </div>
 
+    </section>
+  );
+}
+
+/**
+ * Continuação do Consultor: "Pergunte e receba a resposta com gráfico." + "Ativa em menos de 1 minuto".
+ * Fica separada para a seção "Como é o acesso" entrar entre as duas.
+ */
+export function ConsultorPerguntas() {
+  return (
+    <section className="relative overflow-x-clip pt-4 pb-20 lg:pb-28">
       <AskBlock />
       <ActivateStrip />
     </section>
@@ -74,7 +85,7 @@ export function Consultor() {
 function AskBlock() {
   const { ask } = site.consultor;
   return (
-    <div className="mx-auto mt-20 grid w-full max-w-6xl grid-cols-1 gap-10 px-4 sm:px-6 lg:mt-28 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-center lg:gap-16">
+    <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 px-4 sm:px-6 lg:grid-cols-[minmax(0,6fr)_minmax(0,5fr)] lg:items-center lg:gap-16">
       <FadeIn className="flex flex-col items-center gap-4 text-center lg:items-start lg:text-left">
         <span className="text-xs font-bold tracking-[0.18em] text-primary uppercase">Perguntas</span>
         <h3 className="max-w-[18ch] text-[1.75rem] leading-[1.1] font-extrabold tracking-[-0.03em] text-balance sm:text-3xl lg:text-4xl">

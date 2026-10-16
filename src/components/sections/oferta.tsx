@@ -68,6 +68,7 @@ export function Oferta() {
                 <CheckoutButton location="oferta" className="sm:w-full">
                   Quero organizar minhas finanças
                 </CheckoutButton>
+                <p className="mt-3 text-center text-[13px] font-medium text-foreground/80">{site.acesso.offerNote}</p>
               </div>
 
               <div className="mt-5 flex flex-col items-center gap-2.5">

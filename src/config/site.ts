@@ -226,6 +226,29 @@ export const site = {
     },
   },
 
+  /**
+   * Seção "Como é o acesso": deixa claro, antes da compra, que Alive Finance = MultiCap
+   * (checkout, e-mail e app aparecem com o nome MultiCap).
+   */
+  acesso: {
+    eyebrow: "Como é o acesso",
+    title: "Alive Finance é a MultiCap.",
+    text: "Alive Finance é o nome que o Lipe dá pra MultiCap, a plataforma que ele usa pra organizar o dinheiro. Não é um app separado: depois da compra, tudo acontece dentro da MultiCap.",
+    steps: [
+      { title: "Você compra", text: "No checkout da Kiwify, o produto aparece como Planilha MultiCap." },
+      {
+        title: "Recebe o acesso por e-mail",
+        text: "Chega um e-mail da MultiCap (contato@multicap.com.br) com o botão Criar senha e entrar.",
+      },
+      {
+        title: "Usa na MultiCap",
+        text: "No computador em planilha.multicap.com.br, no app MultiCap no celular e no Consultor pelo WhatsApp.",
+      },
+    ],
+    /** Linha curta logo abaixo do botão de compra da seção de oferta. */
+    offerNote: "No checkout e no e-mail de acesso, o nome é MultiCap. É a mesma coisa.",
+  },
+
   /** Seção Demo: animação de 45s (vídeo nativo, não VTurb). */
   demo: {
     eyebrow: "Em 45 segundos",
@@ -258,14 +281,21 @@ export const site = {
 
   /** Perguntas frequentes. `cta: "whatsapp"` anexa o link de suporte à resposta. */
   faq: [
-    { q: "Como recebo o acesso?", a: "Logo após a compra você recebe por e-mail o seu acesso. É o mesmo login no app e no navegador." },
+    {
+      q: "O Alive Finance é um app diferente da MultiCap?",
+      a: "Não. Alive Finance é o nome que o Lipe dá pra MultiCap. Na compra, no e-mail de acesso e no app, o nome que aparece é MultiCap, e é lá que ficam seus gastos, metas, reserva e o Consultor no WhatsApp.",
+    },
+    {
+      q: "Como recebo o acesso?",
+      a: "Logo após a compra chega um e-mail da MultiCap (contato@multicap.com.br) com o botão Criar senha e entrar. É o mesmo login no app MultiCap e no navegador.",
+    },
     {
       q: "Funciona no celular?",
       a: "Sim. Tem app para iPhone e Android, funciona no navegador do computador e ainda dá pra lançar pelo WhatsApp com o Consultor.",
     },
     {
       q: "Como acesso depois de comprar?",
-      a: "Você garante seu acesso aqui pela página. Depois é só entrar no app MultiCap (App Store ou Google Play) ou no navegador com o mesmo e-mail da compra.",
+      a: "Você garante seu acesso aqui pela página. Depois é só entrar no app MultiCap (App Store ou Google Play) ou em planilha.multicap.com.br no computador, com o mesmo e-mail da compra.",
     },
     {
       q: "Como funciona o Consultor no WhatsApp?",
